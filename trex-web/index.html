@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Trex Marketing — Publicidad & Social Media</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<script src="./trex-content.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+html,body{margin:0;padding:0;background:#0a0a18;color:#f1eefc;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+::selection{background:#d84fa6;color:#fff}
+a{color:#2dd4bf;text-decoration:none}
+a:hover{color:#d84fa6}
+input::placeholder,textarea::placeholder{color:#6f6b8f}
+select option{background:#14123a;color:#f1eefc}
+@media (pointer:fine){body.trex-cursor,body.trex-cursor *{cursor:none !important}}
+body::-webkit-scrollbar{width:10px}
+body::-webkit-scrollbar-track{background:#0a0a18}
+body::-webkit-scrollbar-thumb{background:linear-gradient(#2dd4bf,#d84fa6);border-radius:10px}
+</style>
+</helmet>
+<div ref="{{ rootRef }}" data-screen-label="{{ screenLabel }}" style="position:relative;min-height:100vh;font-family:'DM Sans',system-ui,sans-serif;color:#f1eefc;overflow-x:clip">
+
+  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,#0c0a20 0%,#0a0a18 50%,#0c0a1f 100%)"></div>
+  <canvas ref="{{ canvasRef }}" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none"></canvas>
+  <div ref="{{ progressRef }}" style="position:fixed;top:0;left:0;right:0;height:3px;z-index:60;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,#2dd4bf,#7c6cf0,#d84fa6);box-shadow:0 0 12px #2dd4bf"></div>
+
+  <header ref="{{ headerRef }}" style="position:fixed;top:0;left:0;right:0;z-index:50;border-bottom:1px solid rgba(255,255,255,.06);backdrop-filter:blur(18px) saturate(140%);background:rgba(10,10,24,.45);transition:background .3s">
+    <div style="max-width:1280px;margin:0 auto;padding:14px clamp(18px,4vw,48px);display:flex;align-items:center;gap:24px">
+      <button onClick="{{ goHome }}" data-magnetic="" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:12px">
+        <div style="position:relative;width:42px;height:42px;border-radius:13px;overflow:hidden;background:#2a1f48;border:1px solid rgba(255,255,255,.18);box-shadow:0 0 18px rgba(45,212,191,.35)">
+          <img src="assets/trex-dino.png" alt="Trex" style="position:absolute;width:190px;left:-78px;top:-88px">
+        </div>
+        <div style="display:flex;flex-direction:column;line-height:1">
+          <span style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:20px;letter-spacing:-.02em">TREX</span>
+          <span style="font-size:10px;letter-spacing:.32em;color:#a7a3c2;margin-top:3px">MARKETING</span>
+        </div>
+      </button>
+      <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+        <nav style="display:flex;gap:6px;margin-left:auto;margin-right:auto">
+          <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="4">
+            <button onClick="{{ n.go }}" style="all:unset;cursor:pointer;position:relative;padding:10px 14px;white-space:nowrap;font-size:15px;font-weight:500;color:{{ n.color }};transition:color .25s" style-hover="color:#fff">
+              {{ n.label }}
+              <span style="position:absolute;left:14px;right:14px;bottom:4px;height:2px;border-radius:2px;background:linear-gradient(90deg,#2dd4bf,#d84fa6);transform-origin:0 50%;transition:transform .4s cubic-bezier(.2,.8,.2,1);transform:{{ n.bar }}"></span>
+            </button>
+          </sc-for>
+        </nav>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:10px;margin-left:auto">
+        <button onClick="{{ toggleLang }}" data-magnetic="" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid rgba(45,212,191,.3);background:rgba(45,212,191,.08);font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;color:#2dd4bf" style-hover="background:rgba(45,212,191,.18)">
+          <span>{{ t.nav.flag }}</span><span>{{ t.nav.lang }}</span>
+        </button>
+        <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ goContact }}" data-magnetic="" style="all:unset;cursor:pointer;white-space:nowrap;padding:12px 22px;border-radius:999px;background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6);font-family:'Plus Jakarta Sans';font-weight:800;font-size:15px;color:#0a0a18;box-shadow:0 8px 30px -8px rgba(216,79,166,.6)" style-hover="box-shadow:0 10px 40px -6px rgba(45,212,191,.8)">{{ t.nav.cta }}</button>
+        </sc-if>
+        <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ toggleMenu }}" style="all:unset;cursor:pointer;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 7h16 M4 12h16 M4 17h10"></path></svg>
+          </button>
+        </sc-if>
+      </div>
+    </div>
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:8px clamp(18px,4vw,48px) 24px;display:flex;flex-direction:column;gap:4px">
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="4">
+          <button onClick="{{ n.go }}" style="all:unset;cursor:pointer;padding:14px 4px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:28px;letter-spacing:-.02em;color:{{ n.color }};border-bottom:1px solid rgba(255,255,255,.06)">{{ n.label }}</button>
+        </sc-for>
+        <button onClick="{{ goContact }}" style="all:unset;cursor:pointer;margin-top:14px;text-align:center;padding:16px;border-radius:999px;background:linear-gradient(90deg,#2dd4bf,#d84fa6);font-family:'Plus Jakarta Sans';font-weight:800;color:#0a0a18">{{ t.nav.cta }}</button>
+      </div>
+    </sc-if>
+  </header>
+
+  <main style="position:relative;z-index:2">
+
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+    <section data-screen-label="Inicio · Hero" style="position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 0 80px;overflow:hidden">
+      <div style="position:absolute;left:-20%;right:-20%;bottom:-8%;height:46%;pointer-events:none;perspective:700px;-webkit-mask-image:linear-gradient(transparent,#000 45%);mask-image:linear-gradient(transparent,#000 45%)">
+        <div data-gridflow="" style="position:absolute;inset:0;transform:rotateX(62deg);transform-origin:50% 100%;background-image:linear-gradient(rgba(45,212,191,.32) 1px,transparent 1px),linear-gradient(90deg,rgba(216,79,166,.28) 1px,transparent 1px);background-size:64px 64px"></div>
+      </div>
+      <div style="position:relative;width:100%;max-width:1440px;margin:0 auto;padding:0 clamp(20px,5vw,72px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:clamp(32px,4vw,72px);align-items:center">
+        <div style="position:relative;z-index:2;min-width:0">
+          <div data-reveal="up" style="display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);backdrop-filter:blur(14px);font-size:14px;letter-spacing:.04em;color:#e1ddf5;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)">
+            <span data-pulse="" style="width:8px;height:8px;border-radius:50%;background:#2dd4bf;box-shadow:0 0 10px #2dd4bf"></span>{{ t.hero.badge }}
+          </div>
+          <h1 data-glitch="" style="margin:28px 0 32px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(50px,6.3vw,118px);line-height:.9;letter-spacing:-.05em">
+            <span style="display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em"><span data-reveal="mask" data-delay="80" style="display:block">{{ t.hero.l1 }}</span></span>
+            <span style="display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em"><span data-reveal="mask" data-delay="150" style="display:block;color:transparent;-webkit-text-stroke:2px rgba(241,238,252,.9)">{{ t.hero.l2 }}</span></span>
+            <span style="display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em"><span data-reveal="mask" data-delay="220" style="display:block"><span data-shimmer="" style="background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6,#9aa0c3,#2dd4bf);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 30px rgba(216,79,166,.35))">{{ t.hero.l3 }}</span></span></span>
+            <span style="display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em"><span data-reveal="mask" data-delay="300" style="display:block">{{ t.hero.l4 }}</span></span>
+          </h1>
+          <p data-reveal="up" data-delay="420" style="margin:0 0 20px;max-width:580px;font-size:clamp(17px,1.25vw,20px);line-height:1.6;color:#c4c0dc;text-wrap:pretty">{{ t.hero.p }}</p>
+          <p data-reveal="up" data-delay="500" style="margin:0;max-width:580px;padding-left:18px;border-left:2px solid #2dd4bf;font-size:clamp(17px,1.25vw,20px);line-height:1.5;font-weight:700;color:#2dd4bf;text-wrap:pretty">{{ t.hero.strong }}</p>
+          <div data-reveal="up" data-delay="600" style="margin-top:38px;display:flex;flex-wrap:wrap;gap:16px">
+            <button onClick="{{ goServices }}" data-magnetic="" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:19px 32px;border-radius:999px;background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6);font-family:'Plus Jakarta Sans';font-weight:800;font-size:17px;color:#0a0a18;box-shadow:0 14px 40px -12px rgba(45,212,191,.7)" style-hover="box-shadow:0 18px 50px -8px rgba(216,79,166,.85)">
+              {{ t.hero.b1 }}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.arrow }}"></path></svg>
+            </button>
+            <button onClick="{{ goWork }}" data-magnetic="" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:19px 32px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);backdrop-filter:blur(14px);font-family:'Plus Jakarta Sans';font-weight:700;font-size:17px;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)" style-hover="background:rgba(255,255,255,.12);border-color:rgba(216,79,166,.6)">
+              {{ t.hero.b2 }}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.arrow }}"></path></svg>
+            </button>
+          </div>
+        </div>
+        <div data-reveal="scale" data-delay="150" style="position:relative;width:100%;max-width:640px;aspect-ratio:1/1.05;justify-self:center">
+          <div style="position:absolute;inset:4%;border-radius:50%;background:radial-gradient(circle,rgba(56,120,255,.42),rgba(216,79,166,.16) 45%,transparent 68%);filter:blur(18px);pointer-events:none"></div>
+          <div style="position:absolute;inset:0;border-radius:28px;border:1px solid rgba(255,255,255,.06);background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:24px 24px;-webkit-mask-image:radial-gradient(ellipse at center,#000 40%,transparent 75%);mask-image:radial-gradient(ellipse at center,#000 40%,transparent 75%);pointer-events:none"></div>
+          <div style="position:absolute;left:0;top:0;width:34px;height:34px;border-left:2px solid #2dd4bf;border-top:2px solid #2dd4bf;pointer-events:none"></div>
+          <div style="position:absolute;right:0;top:0;width:34px;height:34px;border-right:2px solid #d84fa6;border-top:2px solid #d84fa6;pointer-events:none"></div>
+          <div style="position:absolute;left:0;bottom:0;width:34px;height:34px;border-left:2px solid #d84fa6;border-bottom:2px solid #d84fa6;pointer-events:none"></div>
+          <div style="position:absolute;right:0;bottom:0;width:34px;height:34px;border-right:2px solid #2dd4bf;border-bottom:2px solid #2dd4bf;pointer-events:none"></div>
+          <div data-float="14" data-phase="0" style="position:absolute;inset:0">
+            <img src="assets/trex-dino.png" alt="Trex" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%, #000 74%, transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%, #000 74%, transparent 100%);filter:drop-shadow(0 30px 60px rgba(31,95,224,.5)) saturate(1.1)">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="position:relative;padding:20px 0 60px;overflow:hidden">
+      <div style="transform:rotate(-2.5deg);margin:0 -40px;background:linear-gradient(90deg,#2dd4bf,#7c6cf0,#d84fa6);padding:18px 0;box-shadow:0 0 60px rgba(124,108,240,.4)">
+        <div data-marquee="1.1" style="display:flex;width:max-content;gap:0">
+          <sc-for list="{{ marquee2 }}" as="m" hint-placeholder-count="12">
+            <span style="display:flex;align-items:center;gap:28px;padding-right:28px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(28px,3.4vw,46px);letter-spacing:-.02em;color:#0a0a18;white-space:nowrap">{{ m }}<svg width="28" height="28" viewBox="0 0 24 24" fill="#0a0a18"><path d="{{ ic.sparkle }}"></path></svg></span>
+          </sc-for>
+        </div>
+      </div>
+      <div style="transform:rotate(1.5deg);margin:-6px -40px 0;background:rgba(10,10,24,.9);border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);padding:14px 0">
+        <div data-marquee="-0.7" style="display:flex;width:max-content">
+          <sc-for list="{{ marquee2 }}" as="m" hint-placeholder-count="12">
+            <span style="padding-right:48px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(22px,2.6vw,34px);color:transparent;-webkit-text-stroke:1px rgba(241,238,252,.45);white-space:nowrap">{{ m }}</span>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:40px 0 80px">
+      <div style="max-width:1000px;margin:0 auto;padding:0 clamp(20px,5vw,56px)">
+        <div data-reveal="up" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));border-radius:28px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(140deg,rgba(255,255,255,.07),rgba(255,255,255,.015));backdrop-filter:blur(18px);overflow:hidden">
+          <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
+            <div style="padding:34px 24px;text-align:center;border-left:1px solid rgba(255,255,255,.07)">
+              <div style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(48px,5vw,68px);line-height:1;letter-spacing:-.03em;background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6);-webkit-background-clip:text;background-clip:text;color:transparent"><span data-count="{{ s.n }}">{{ s.val }}</span><span>{{ s.suf }}</span></div>
+              <div style="margin-top:10px;font-size:15px;color:#a7a3c2">{{ s.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section data-screen-label="Inicio · Video" style="position:relative;height:92vh;min-height:560px;overflow:hidden">
+      <div data-zoom="" style="position:absolute;inset:-6%">
+        <div style="position:absolute;inset:0;background:#120f30"></div>
+        <div data-spin="8" style="position:absolute;left:50%;top:50%;width:140vmax;height:140vmax;margin:-70vmax 0 0 -70vmax;background:conic-gradient(from 0deg,rgba(45,212,191,.35),rgba(43,42,138,.1) 25%,rgba(216,79,166,.35) 50%,rgba(43,42,138,.1) 75%,rgba(45,212,191,.35));filter:blur(60px)"></div>
+        <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px"></div>
+        <sc-if value="{{ hasVideo }}" hint-placeholder-val="{{ false }}">
+          <video ref="{{ videoRef }}" autoplay="" muted="" loop="" playsinline="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video>
+        </sc-if>
+      </div>
+      <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#0a0a18 0%,rgba(20,14,60,.55) 22%,rgba(20,14,60,.6) 75%,#0a0a18 100%)"></div>
+      <div style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px)"></div>
+      <div style="position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;padding:0 20px">
+        <h2 data-glitch="" style="margin:0;text-align:center;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(32px,8.6vw,112px);line-height:.95;letter-spacing:-.045em">
+          <span data-reveal="up" style="display:block;color:#2dd4bf;text-shadow:0 0 40px rgba(45,212,191,.5)">{{ t.video.l1 }}</span>
+          <span data-reveal="up" data-delay="120" style="display:block;background:linear-gradient(90deg,#8fb0c6,#c08ac0);-webkit-background-clip:text;background-clip:text;color:transparent">{{ t.video.l2 }}</span>
+          <span data-reveal="up" data-delay="240" style="display:block;color:#d84fa6;text-shadow:0 0 40px rgba(216,79,166,.55)">{{ t.video.l3 }}</span>
+        </h2>
+      </div>
+    </section>
+
+    <section style="padding:40px 0 120px">
+      <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:20px">
+        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+          <div data-reveal="up" data-delay="{{ s.delay }}">
+            <div data-tilt="" style="position:relative;height:100%;padding:28px 26px 30px;border-radius:24px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(160deg,rgba(40,34,110,.55),rgba(14,12,40,.7));backdrop-filter:blur(16px);overflow:hidden;transform-style:preserve-3d">
+              <div data-shine="" style="position:absolute;inset:0;opacity:0;transition:opacity .3s;pointer-events:none"></div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div style="position:relative;width:58px;height:58px">
+                  <div style="position:absolute;inset:10px;border-radius:50%;background:{{ s.color }};filter:blur(16px);opacity:.65"></div>
+                  <div style="position:relative;width:100%;height:100%;border-radius:18px;background:linear-gradient(140deg,rgba(255,255,255,.24),rgba(255,255,255,.04) 60%);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.35);display:grid;place-items:center">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 6px {{ s.color }})"><path d="{{ s.path }}"></path></svg>
+                  </div>
+                </div>
+                <span style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:52px;line-height:1;color:transparent;-webkit-text-stroke:1.2px {{ s.stroke }}">{{ s.n }}</span>
+              </div>
+              <h3 style="margin:26px 0 12px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:22px;color:{{ s.color }}">{{ s.t }}</h3>
+              <p style="margin:0;font-size:16px;line-height:1.6;color:#b9b5d3">{{ s.d }}</p>
+              <div style="margin-top:28px;height:2px;border-radius:2px;background:linear-gradient(90deg,{{ s.color }},transparent)"></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section data-screen-label="Inicio · Trabajo" style="padding:60px 0 120px">
+      <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,56px);text-align:center">
+        <h2 data-glitch="" style="margin:0;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(38px,5.6vw,84px);line-height:.98;letter-spacing:-.045em">
+          <span data-reveal="up" data-shimmer="" style="display:block;background:linear-gradient(90deg,#2dd4bf,#a59ac8,#2dd4bf);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent">{{ t.work.l1 }}</span>
+          <span data-reveal="up" data-delay="120" style="display:block;background:linear-gradient(90deg,#c070c0,#d84fa6);-webkit-background-clip:text;background-clip:text;color:transparent">{{ t.work.l2 }}</span>
+        </h2>
+        <p data-reveal="up" data-delay="200" style="margin:22px auto 0;max-width:640px;font-size:19px;color:#b9b5d3">{{ t.work.sub }}</p>
+
+        <div style="margin-top:70px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:clamp(24px,5vw,80px)">
+          <div data-reveal="left" style="display:flex;flex-direction:column;align-items:center">
+            <div style="width:220px;height:400px;padding:7px;border-radius:44px;background:#2a2a3a;box-shadow:0 30px 60px -20px rgba(0,0,0,.6);transform-style:preserve-3d">
+              <div style="position:relative;width:100%;height:100%;border-radius:37px;overflow:hidden">
+                <image-slot id="trex-before" shape="rect" placeholder="{{ t.work.dropBefore }}" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+                <sc-if value="{{ hasBeforeVid }}" hint-placeholder-val="{{ false }}"><video ref="{{ beforeVidRef }}" data-k="beforeVideo" preload="auto" loop="" playsinline="" onClick="{{ toggleBeforeSound }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.55) brightness(.88)"></video></sc-if>
+                <div style="position:absolute;top:12px;left:50%;width:76px;height:22px;margin-left:-38px;border-radius:20px;background:#111;pointer-events:none"></div>
+                <sc-if value="{{ hasBeforeVid }}" hint-placeholder-val="{{ false }}"><sc-if value="{{ beforePlayOff }}" hint-placeholder-val="{{ true }}"><button onClick="{{ toggleBeforeSound }}" aria-label="Play" style="all:unset;cursor:pointer;position:absolute;left:50%;top:50%;z-index:3;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(140deg,rgba(255,255,255,.3),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.4);backdrop-filter:blur(12px);box-shadow:0 0 0 10px rgba(255,255,255,.06),0 0 40px rgba(45,212,191,.55)" style-hover="box-shadow:0 0 0 14px rgba(255,255,255,.08),0 0 50px rgba(216,79,166,.7)"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" style="margin-left:4px;filter:drop-shadow(0 0 6px #2dd4bf)"><path d="M7 4.5v15l13-7.5z"></path></svg></button></sc-if>
+                <sc-if value="{{ beforePlayOn }}" hint-placeholder-val="{{ false }}"><button onClick="{{ toggleBeforeSound }}" aria-label="Pause" style="all:unset;cursor:pointer;position:absolute;right:12px;bottom:12px;z-index:3;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#2dd4bf,#d84fa6);border:1px solid rgba(255,255,255,.3);box-shadow:0 6px 18px rgba(0,0,0,.4)"><svg width="16" height="16" viewBox="0 0 24 24" fill="#0a0a18"><path d="M6 4h4v16H6z M14 4h4v16h-4z"></path></svg></button></sc-if></sc-if>
+              </div>
+            </div>
+            <div style="margin-top:26px;font-family:'Plus Jakarta Sans';font-weight:800;letter-spacing:.3em;font-size:16px;color:#9a97b4">{{ t.work.before }}</div>
+            <div style="margin-top:8px;font-size:15px;color:#77738f">{{ t.work.beforeSub }}</div>
+          </div>
+          <div data-float="6" data-phase="1" style="display:grid;place-items:center">
+            <svg width="72" height="40" viewBox="0 0 72 40" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="arrg" x1="0" x2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#d84fa6"></stop></linearGradient></defs><path d="M4 20h60 M48 6l16 14-16 14" stroke="url(#arrg)"></path></svg>
+          </div>
+          <div data-reveal="right" style="display:flex;flex-direction:column;align-items:center">
+            <div style="position:relative;width:270px;height:490px;border-radius:50px;overflow:hidden;box-shadow:0 0 80px -10px rgba(45,212,191,.45),0 0 120px -20px rgba(216,79,166,.5);transform-style:preserve-3d">
+              <div data-spin="40" style="position:absolute;inset:-40%;background:conic-gradient(#2dd4bf,#7c6cf0,#d84fa6,#2dd4bf)"></div>
+              <div style="position:absolute;inset:3px;border-radius:47px;overflow:hidden;background:#000">
+                <image-slot id="trex-after" shape="rect" placeholder="{{ t.work.dropAfter }}" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+                <sc-if value="{{ hasAfterVid }}" hint-placeholder-val="{{ false }}"><video ref="{{ afterVidRef }}" data-k="afterVideo" preload="auto" loop="" playsinline="" onClick="{{ toggleAfterSound }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video><sc-if value="{{ afterPlayOff }}" hint-placeholder-val="{{ true }}"><button onClick="{{ toggleAfterSound }}" aria-label="Play" style="all:unset;cursor:pointer;position:absolute;left:50%;top:50%;z-index:3;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(140deg,rgba(255,255,255,.3),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.4);backdrop-filter:blur(12px);box-shadow:0 0 0 10px rgba(255,255,255,.06),0 0 40px rgba(45,212,191,.55)" style-hover="box-shadow:0 0 0 14px rgba(255,255,255,.08),0 0 50px rgba(216,79,166,.7)"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" style="margin-left:4px;filter:drop-shadow(0 0 6px #2dd4bf)"><path d="M7 4.5v15l13-7.5z"></path></svg></button></sc-if>
+                <sc-if value="{{ afterPlayOn }}" hint-placeholder-val="{{ false }}"><button onClick="{{ toggleAfterSound }}" aria-label="Pause" style="all:unset;cursor:pointer;position:absolute;right:12px;bottom:12px;z-index:3;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#2dd4bf,#d84fa6);border:1px solid rgba(255,255,255,.3);box-shadow:0 6px 18px rgba(0,0,0,.4)"><svg width="16" height="16" viewBox="0 0 24 24" fill="#0a0a18"><path d="M6 4h4v16H6z M14 4h4v16h-4z"></path></svg></button></sc-if></sc-if>
+              </div>
+            </div>
+            <div style="margin-top:26px;font-family:'Plus Jakarta Sans';font-weight:800;letter-spacing:.3em;font-size:18px;background:linear-gradient(90deg,#2dd4bf,#d84fa6);-webkit-background-clip:text;background-clip:text;color:transparent">{{ t.work.after }}</div>
+            <div style="margin-top:8px;font-size:16px;color:#cfcbe6">{{ t.work.afterSub }}</div>
+          </div>
+        </div>
+        <div data-reveal="up" style="margin-top:56px;font-size:15px;letter-spacing:.2em;color:#77738f">{{ t.work.client }}</div>
+        <div data-reveal="up" data-delay="100" style="margin-top:34px;display:flex;justify-content:center">
+          <button onClick="{{ goWork }}" data-magnetic="" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:20px 34px;border-radius:999px;background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6);font-family:'Plus Jakarta Sans';font-weight:800;font-size:17px;color:#0a0a18;box-shadow:0 14px 40px -12px rgba(45,212,191,.7)" style-hover="box-shadow:0 18px 50px -8px rgba(216,79,166,.85)">{{ t.work.btn }}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.arrow }}"></path></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:40px 0 100px">
+      <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,56px)">
+        <sc-for list="{{ process }}" as="p" hint-placeholder-count="4">
+          <div data-reveal="up" style="border-bottom:1px solid rgba(255,255,255,.08)">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px 40px;align-items:center;padding:34px 18px;border-radius:20px;transition:background .4s" style-hover="background:linear-gradient(90deg,rgba(45,212,191,.08),rgba(216,79,166,.08))">
+              <div style="display:flex;align-items:center;gap:28px">
+                <span style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(56px,6vw,84px);line-height:1;background:linear-gradient(160deg,{{ p.c1 }},rgba(255,255,255,.05));-webkit-background-clip:text;background-clip:text;color:transparent">{{ p.n }}</span>
+                <h3 style="margin:0;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(22px,2.2vw,30px);line-height:1.1;letter-spacing:-.02em">{{ p.t }}</h3>
+              </div>
+              <div style="display:flex;align-items:center;gap:28px">
+                <div data-reveal="line" data-delay="200" style="flex:1;min-width:40px;height:2px;transform-origin:0 50%;background:linear-gradient(90deg,{{ p.c1 }},transparent)"></div>
+                <p style="margin:0;flex:2;font-size:17px;line-height:1.6;color:#b9b5d3">{{ p.d }}</p>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section data-screen-label="Inicio · CTA 3D" style="padding:40px 0 120px">
+      <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,56px)">
+        <div data-reveal="scale" style="position:relative;border-radius:36px;overflow:hidden;box-shadow:0 40px 120px -40px rgba(124,108,240,.7)">
+          <div data-spin="22" style="position:absolute;inset:-60%;background:conic-gradient(#2dd4bf,#2b2a8a,#d84fa6,#2b2a8a,#2dd4bf)"></div>
+          <div style="position:relative;margin:2px;border-radius:34px;background:radial-gradient(ellipse at 20% 0%,#4b2c84,transparent 60%),radial-gradient(ellipse at 90% 100%,#1d3f86,transparent 60%),linear-gradient(140deg,#2c2a8c,#3a2577 50%,#14215e);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));align-items:center">
+            <div style="padding:clamp(36px,6vw,72px)">
+              <h2 style="margin:0;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(30px,3.4vw,50px);line-height:1.04;letter-spacing:-.035em">
+                <span data-reveal="up" style="display:block">{{ t.cta.l1 }}</span>
+                <span data-reveal="up" data-delay="100" style="display:block">{{ t.cta.l2 }}</span>
+                <span data-reveal="up" data-delay="200" data-shimmer="" style="display:block;background:linear-gradient(90deg,#fff,#2dd4bf,#f0a3d6,#fff);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent">{{ t.cta.l3 }}</span>
+              </h2>
+              <p data-reveal="up" data-delay="300" style="margin:24px 0 32px;max-width:520px;font-size:18px;line-height:1.6;color:#d6d2ef">{{ t.cta.p }}</p>
+              <div data-reveal="up" data-delay="400" style="display:flex">
+                <button onClick="{{ goContact }}" data-magnetic="" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:20px 32px;border-radius:999px;background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6);font-family:'Plus Jakarta Sans';font-weight:800;font-size:17px;color:#0a0a18;box-shadow:0 14px 40px -12px rgba(45,212,191,.8)">{{ t.cta.btn }}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.arrow }}"></path></svg></button>
+              </div>
+              <div style="margin-top:28px;font-size:14px;letter-spacing:.22em;color:#9aa6d6">{{ t.cta.note }}</div>
+            </div>
+            <div style="position:relative;height:clamp(380px,46vw,560px)">
+              <div style="position:absolute;left:50%;bottom:8%;width:60%;height:40px;margin-left:-30%;border-radius:50%;background:radial-gradient(rgba(45,212,191,.45),transparent 70%);filter:blur(12px)"></div>
+              <canvas data-pixel="" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
+              <div style="position:absolute;right:20px;bottom:20px;display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(10,10,24,.4);backdrop-filter:blur(10px);font-size:13px;color:#d6d2ef;pointer-events:none">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.sparkle }}"></path></svg>{{ t.cta.pixelHint }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{ isServices }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="Servicios" style="padding:150px 0 40px">
+      <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,56px);text-align:center">
+        <div data-reveal="up" style="font-size:15px;letter-spacing:.42em;color:#2dd4bf">{{ t.services.eyebrow }}</div>
+        <h1 data-glitch="" style="margin:22px 0 0;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(40px,6vw,92px);line-height:.98;letter-spacing:-.045em">
+          <span style="display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em"><span data-reveal="mask" style="display:block">{{ t.services.l1 }}</span></span>
+          <span style="display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em"><span data-reveal="mask" data-delay="100" style="display:block">{{ t.services.l2 }}</span></span>
+          <span style="display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em"><span data-reveal="mask" data-delay="200" style="display:block"><span data-shimmer="" style="background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6,#9aa0c3,#2dd4bf);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent">{{ t.services.l3 }}</span></span></span>
+        </h1>
+      </div>
+    </section>
+    <section style="padding:30px 0 50px;overflow:hidden">
+      <div data-marquee="0.8" style="display:flex;width:max-content">
+        <sc-for list="{{ areaMarquee }}" as="m" hint-placeholder-count="10">
+          <div style="display:flex;align-items:center;gap:12px;margin-right:14px;padding:12px 20px;border-radius:999px;border:1px solid {{ m.border }};background:{{ m.tint }};white-space:nowrap;font-weight:700;color:{{ m.color }}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ m.path }}"></path></svg>{{ m.t }}
+          </div>
+        </sc-for>
+      </div>
+    </section>
+    <section data-screen-label="Servicios · Pilares" style="padding:20px 0 90px">
+      <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08)">
+        <sc-for list="{{ svcCards }}" as="s" hint-placeholder-count="4">
+          <div data-reveal="up" data-delay="{{ s.delay }}">
+            <div style="position:relative;height:100%;padding:36px 28px 40px;border-left:1px solid rgba(255,255,255,.08);transition:background .5s" style-hover="background:rgba(255,255,255,.035)">
+              <div style="position:absolute;left:-1px;top:0;width:2px;height:90px;background:linear-gradient({{ s.color }},transparent);box-shadow:0 0 14px {{ s.color }}"></div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div style="position:relative;width:66px;height:66px;flex:none"><div style="position:absolute;inset:11px;border-radius:50%;background:{{ s.color }};filter:blur(19px);opacity:.7;transition:background .5s"></div><div style="position:relative;width:100%;height:100%;border-radius:20px;background:linear-gradient(140deg,rgba(255,255,255,.26),rgba(255,255,255,.04) 60%);border:1px solid rgba(255,255,255,.24);backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.4);display:grid;place-items:center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 6px {{ s.color }})"><path d="{{ s.path }}"></path></svg></div></div>
+                <span style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:15px;letter-spacing:.2em;color:{{ s.color }}">{{ s.num }}</span>
+              </div>
+              <h3 style="margin:30px 0 22px;min-height:2.2em;display:flex;align-items:flex-end;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(22px,1.9vw,27px);line-height:1.1;letter-spacing:-.02em;color:#fff">{{ s.t }}</h3>
+              <div style="display:flex;flex-direction:column;gap:11px">
+                <sc-for list="{{ s.tags }}" as="g" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;gap:12px;font-size:16px;line-height:1.35;color:#cfcbe6"><span style="flex:none;width:16px;height:2px;border-radius:2px;background:{{ g.color }}"></span>{{ g.txt }}</div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+    <section data-screen-label="Servicios · Explorador" style="padding:20px 0 70px">
+      <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,56px)">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 30px">
+          <h2 data-reveal="up" style="margin:0;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(34px,4vw,58px);letter-spacing:-.04em">{{ t.services.whatT }}</h2>
+          <p data-reveal="up" data-delay="80" style="margin:0;font-size:17px;color:#a7a3c2">{{ t.services.whatSub }}</p>
+        </div>
+        <div style="margin-top:36px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:clamp(20px,3vw,40px);align-items:start">
+          <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+            <div data-reveal="left" style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ areas }}" as="a" hint-placeholder-count="11">
+                <button onClick="{{ a.select }}" style="all:unset;box-sizing:border-box;cursor:pointer;position:relative;display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:14px;padding:13px 18px;border-radius:16px;background:{{ a.rowBg }};transition:background .35s" style-hover="background:rgba(255,255,255,.05)">
+                  <span style="position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:3px;background:{{ a.color }};box-shadow:0 0 12px {{ a.color }};opacity:{{ a.barOp }};transition:opacity .35s"></span>
+                  <span style="font-family:'Plus Jakarta Sans';font-weight:700;font-size:14px;letter-spacing:.1em;color:{{ a.numColor }};transition:color .35s">{{ a.num }}</span>
+                  <span style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(18px,1.5vw,21px);letter-spacing:-.01em;color:{{ a.titleColor }};transition:color .35s">{{ a.t }}</span>
+                  <span style="min-width:30px;padding:4px 9px;border-radius:999px;text-align:center;font-size:13px;font-weight:700;color:{{ a.pillColor }};background:{{ a.pillBg }};transition:background .35s,color .35s">{{ a.n }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 12px;scrollbar-width:none">
+              <sc-for list="{{ areas }}" as="a" hint-placeholder-count="5">
+                <button onClick="{{ a.select }}" style="all:unset;cursor:pointer;flex:none;scroll-snap-align:start;display:flex;align-items:center;gap:9px;padding:12px 16px;border-radius:999px;border:1px solid {{ a.pillBorder }};background:{{ a.chipBg2 }};color:{{ a.chipColor2 }};font-weight:700;font-size:15px;white-space:nowrap;transition:background .3s,color .3s">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ a.path }}"></path></svg>{{ a.t }}
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+          <div data-reveal="right" style="position:sticky;top:100px;min-width:0">
+            <div ref="{{ panelRef }}" style="position:relative;border-radius:30px;overflow:hidden;border:1px solid {{ cur.border }};background:linear-gradient(160deg,rgba(28,24,74,.88),rgba(12,10,34,.94));backdrop-filter:blur(18px);padding:clamp(26px,4vw,44px);min-height:clamp(420px,46vw,560px);transition:border-color .5s">
+              <div style="position:absolute;right:-25%;top:-35%;width:80%;aspect-ratio:1;border-radius:50%;background:{{ cur.color }};filter:blur(90px);opacity:.32;transition:background .6s;pointer-events:none"></div>
+              <svg width="380" height="380" viewBox="0 0 24 24" fill="none" stroke="{{ cur.color }}" stroke-width=".5" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:-70px;bottom:-80px;opacity:.13;pointer-events:none;transition:stroke .6s"><path d="{{ cur.path }}"></path></svg>
+              <div style="position:relative;display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+                <div style="position:relative;width:78px;height:78px;flex:none"><div style="position:absolute;inset:13px;border-radius:50%;background:{{ cur.color }};filter:blur(22px);opacity:.7;transition:background .5s"></div><div style="position:relative;width:100%;height:100%;border-radius:24px;background:linear-gradient(140deg,rgba(255,255,255,.26),rgba(255,255,255,.04) 60%);border:1px solid rgba(255,255,255,.24);backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.4);display:grid;place-items:center"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 6px {{ cur.color }})"><path d="{{ cur.path }}"></path></svg></div></div>
+                <div style="display:flex;gap:8px">
+                  <button onClick="{{ prevArea }}" data-magnetic="" style="all:unset;cursor:pointer;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05)" style-hover="background:rgba(255,255,255,.12)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="transform:scaleX(-1)"><path d="{{ ic.arrow }}"></path></svg></button>
+                  <button onClick="{{ nextArea }}" data-magnetic="" style="all:unset;cursor:pointer;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05)" style-hover="background:rgba(255,255,255,.12)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.arrow }}"></path></svg></button>
+                </div>
+              </div>
+              <div data-anim="" style="position:relative;margin-top:28px;font-family:'Plus Jakarta Sans';font-weight:700;font-size:14px;letter-spacing:.2em;color:{{ cur.color }}">{{ cur.num }} / {{ areasTotal }} · {{ cur.count }}</div>
+              <h3 data-anim="" style="position:relative;margin:10px 0 26px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(30px,3.4vw,48px);line-height:1.02;letter-spacing:-.04em">{{ cur.t }}</h3>
+              <div style="position:relative;display:flex;flex-wrap:wrap;gap:10px">
+                <sc-for list="{{ cur.list }}" as="it" hint-placeholder-count="6">
+                  <span data-anim="" style="display:inline-flex;align-items:center;gap:9px;padding:10px 15px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);backdrop-filter:blur(8px);font-size:15px;line-height:1.35;color:#e6e2f7"><span style="flex:none;width:6px;height:6px;border-radius:50%;background:{{ it.color }};box-shadow:0 0 8px {{ it.color }}"></span>{{ it.txt }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div data-reveal="up" style="margin-top:50px;display:flex;justify-content:center">
+          <button onClick="{{ scrollToPacks }}" data-magnetic="" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:20px 34px;border-radius:999px;background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6);font-family:'Plus Jakarta Sans';font-weight:800;font-size:17px;color:#0a0a18;box-shadow:0 14px 40px -12px rgba(45,212,191,.7)">{{ t.services.btn }}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.arrow }}"></path></svg></button>
+        </div>
+      </div>
+    </section>
+    <section ref="{{ packsRef }}" data-screen-label="Servicios · Paquetes" style="padding:80px 0 120px">
+      <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,56px)">
+        <h2 data-reveal="up" style="margin:0;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(32px,3.6vw,50px);letter-spacing:-.035em">{{ t.services.packT }}</h2>
+        <p data-reveal="up" data-delay="80" style="margin:12px 0 44px;font-size:17px;color:#a7a3c2">{{ t.services.packSub }}</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px;align-items:stretch">
+          <sc-for list="{{ packs }}" as="p" hint-placeholder-count="3">
+            <div data-reveal="up" data-delay="{{ p.delay }}">
+              <div data-tilt="" style="position:relative;height:100%;border-radius:28px;overflow:hidden;box-shadow:{{ p.shadow }}">
+                <sc-if value="{{ p.featured }}" hint-placeholder-val="{{ false }}"><div data-spin="30" style="position:absolute;inset:-60%;background:conic-gradient(#2dd4bf,#7c6cf0,#d84fa6,#7c6cf0,#2dd4bf)"></div></sc-if>
+                <div style="position:relative;height:calc(100% - 4px);margin:2px;border-radius:26px;padding:32px 30px;display:flex;flex-direction:column;background:{{ p.bg }};border:1px solid rgba(255,255,255,.08)">
+                  <div data-shine="" style="position:absolute;inset:0;opacity:0;transition:opacity .3s;pointer-events:none;border-radius:26px"></div>
+                  <sc-if value="{{ p.featured }}" hint-placeholder-val="{{ false }}">
+                    <div data-shimmer="" style="align-self:flex-start;margin-bottom:14px;padding:6px 14px;border-radius:999px;background:linear-gradient(90deg,#2dd4bf,#f0a3d6,#d84fa6,#2dd4bf);background-size:200% 100%;font-weight:700;font-size:14px;letter-spacing:.12em;color:#0a0a18">{{ t.services.popular }}</div>
+                  </sc-if>
+                  <div style="font-size:14px;letter-spacing:.16em;color:#2dd4bf">{{ p.eyebrow }}</div>
+                  <h3 style="margin:6px 0 20px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:34px;letter-spacing:-.03em">{{ p.name }}</h3>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px">
+                    <sc-for list="{{ p.chipList }}" as="c" hint-placeholder-count="3">
+                      <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;background:{{ c.tint }};border:1px solid {{ c.border }};font-size:14px;font-weight:500;color:{{ c.color }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ c.path }}"></path></svg>{{ c.label }}</span>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:12px;flex:1">
+                    <sc-for list="{{ p.items }}" as="it" hint-placeholder-count="6">
+                      <div style="display:flex;gap:12px;font-size:16px;line-height:1.45;color:#e1ddf5"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="{{ ic.check }}"></path></svg><span>{{ it }}</span></div>
+                    </sc-for>
+                  </div>
+                  <p style="margin:28px 0 24px;font-size:16px;line-height:1.6;color:#a7a3c2"><b style="color:#fff">{{ t.services.ideal }}</b> {{ p.ideal }}</p>
+                  <button onClick="{{ goContact }}" data-magnetic="" style="all:unset;cursor:pointer;display:flex;justify-content:center;align-items:center;gap:10px;padding:17px;border-radius:999px;background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6);font-family:'Plus Jakarta Sans';font-weight:800;font-size:17px;color:#0a0a18">{{ t.services.consult }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.arrow }}"></path></svg></button>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div data-reveal="up" style="margin-top:50px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;padding:34px 36px;border-radius:26px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(120deg,rgba(45,212,191,.08),rgba(30,26,80,.7) 40%,rgba(216,79,166,.1));backdrop-filter:blur(16px)">
+          <div>
+            <h3 style="margin:0;font-family:'Plus Jakarta Sans';font-weight:800;font-size:26px">{{ t.services.customT }}</h3>
+            <p style="margin:8px 0 0;max-width:520px;font-size:17px;line-height:1.55;color:#a7a3c2">{{ t.services.customD }}</p>
+          </div>
+          <button onClick="{{ goContact }}" data-magnetic="" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:18px 30px;border-radius:999px;background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6);font-family:'Plus Jakarta Sans';font-weight:800;font-size:17px;color:#0a0a18">{{ t.services.customBtn }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.arrow }}"></path></svg></button>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{ isWork }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="Nuestro Trabajo" style="padding:160px 0 120px;min-height:100vh">
+      <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,56px)">
+        <h1 data-glitch="" style="margin:0;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(48px,7vw,110px);line-height:.98;letter-spacing:-.045em">
+          <span style="display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em"><span data-reveal="mask" style="display:block">{{ t.workPage.l1 }}</span></span>
+          <span style="display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em"><span data-reveal="mask" data-delay="120" style="display:block;color:#2dd4bf;text-shadow:0 0 50px rgba(45,212,191,.45)">{{ t.workPage.l2 }}</span></span>
+        </h1>
+        <div data-reveal="up" data-delay="250" style="margin-top:22px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px">
+          <p style="margin:0;font-size:18px;color:#b9b5d3">{{ t.workPage.sub }}</p>
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);font-size:16px;color:#a7a3c2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.users }}"></path></svg>0 {{ t.workPage.count }}</div>
+        </div>
+        <div data-reveal="scale" data-delay="300" style="margin-top:56px;position:relative;padding:70px 24px;border-radius:30px;border:1.5px dashed rgba(124,108,240,.4);background:radial-gradient(ellipse at 50% 0%,rgba(124,108,240,.16),transparent 70%);text-align:center;overflow:hidden">
+          <div data-float="12" data-phase="0.5" style="width:150px;height:150px;margin:0 auto 26px">
+            <img src="assets/trex-dino.png" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;-webkit-mask-image:radial-gradient(circle,#000 58%,transparent 72%);mask-image:radial-gradient(circle,#000 58%,transparent 72%)">
+          </div>
+          <p style="margin:0;font-size:18px;color:#b9b5d3">{{ t.workPage.e1 }}</p>
+          <p style="margin:10px 0 0;font-size:16px;color:#77738f">{{ t.workPage.e2 }}</p>
+        </div>
+        <div data-reveal="up" style="margin-top:70px;position:relative;border-radius:30px;overflow:hidden">
+          <div data-spin="22" style="position:absolute;inset:-60%;background:conic-gradient(#2dd4bf,#2b2a8a,#d84fa6,#2b2a8a,#2dd4bf)"></div>
+          <div style="position:relative;margin:2px;border-radius:28px;padding:44px clamp(26px,4vw,48px);background:linear-gradient(120deg,#2c2a8c,#3a2577 55%,#1d3a80);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:24px">
+            <div>
+              <h3 style="margin:0;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(26px,2.8vw,38px);letter-spacing:-.03em">{{ t.workPage.ctaT }}</h3>
+              <p style="margin:10px 0 0;max-width:460px;font-size:17px;line-height:1.55;color:#d6d2ef">{{ t.workPage.ctaD }}</p>
+            </div>
+            <button onClick="{{ goContact }}" data-magnetic="" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:18px 32px;border-radius:999px;background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6);font-family:'Plus Jakarta Sans';font-weight:800;font-size:17px;color:#0a0a18">{{ t.workPage.ctaBtn }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.arrow }}"></path></svg></button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{ isPricing }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="Precios" style="padding:170px 0 140px;min-height:100vh">
+      <div style="max-width:900px;margin:0 auto;padding:0 clamp(20px,5vw,56px);text-align:center">
+        <h1 data-glitch="" style="margin:0;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(46px,6.4vw,96px);line-height:.98;letter-spacing:-.045em">
+          <span style="display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em"><span data-reveal="mask" style="display:block">{{ t.pricing.l1 }}</span></span>
+          <span style="display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em"><span data-reveal="mask" data-delay="120" style="display:block"><span data-shimmer="" style="background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6,#9aa0c3,#2dd4bf);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent">{{ t.pricing.l2 }}</span></span></span>
+        </h1>
+        <p data-reveal="up" data-delay="250" style="margin:24px auto 0;max-width:640px;font-size:19px;line-height:1.6;color:#b9b5d3">{{ t.pricing.p }}</p>
+        <div data-reveal="scale" data-delay="350" style="margin-top:60px">
+          <div data-tilt="" style="position:relative;padding:54px clamp(24px,5vw,60px);border-radius:30px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.01));backdrop-filter:blur(18px);overflow:hidden">
+            <div data-shine="" style="position:absolute;inset:0;opacity:0;transition:opacity .3s;pointer-events:none"></div>
+            <div data-float="8" style="position:relative;width:76px;height:76px;margin:0 auto">
+              <div style="position:absolute;inset:12px;border-radius:50%;background:#7c6cf0;filter:blur(20px);opacity:.8"></div>
+              <div style="position:relative;width:100%;height:100%;border-radius:22px;background:linear-gradient(140deg,rgba(255,255,255,.26),rgba(255,255,255,.04) 60%);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.4);display:grid;place-items:center">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 6px #2dd4bf)"><path d="{{ ic.clipboard }}"></path></svg>
+              </div>
+            </div>
+            <h3 style="margin:28px 0 12px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:24px">{{ t.pricing.cardT }}</h3>
+            <p style="margin:0 auto;max-width:600px;font-size:17px;line-height:1.65;color:#a7a3c2">{{ t.pricing.cardD }}</p>
+          </div>
+        </div>
+        <div data-reveal="up" style="margin-top:48px;display:flex;justify-content:center">
+          <button onClick="{{ goContact }}" data-magnetic="" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:20px 34px;border-radius:999px;background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6);font-family:'Plus Jakarta Sans';font-weight:800;font-size:17px;color:#0a0a18;box-shadow:0 14px 40px -12px rgba(45,212,191,.7)">{{ t.pricing.btn }}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.arrow }}"></path></svg></button>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="Contacto" style="padding:160px 0 120px;min-height:100vh">
+      <div style="max-width:1120px;margin:0 auto;padding:0 clamp(20px,5vw,56px)">
+        <h1 data-glitch="" style="margin:0;font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(46px,6.4vw,96px);line-height:.98;letter-spacing:-.045em">
+          <span style="display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em"><span data-reveal="mask" style="display:block">{{ t.contact.l1 }}</span></span>
+          <span style="display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em"><span data-reveal="mask" data-delay="120" style="display:block"><span data-shimmer="" style="background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6,#9aa0c3,#2dd4bf);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent">{{ t.contact.l2 }}</span></span></span>
+        </h1>
+        <p data-reveal="up" data-delay="220" style="margin:22px 0 0;max-width:640px;font-size:18px;line-height:1.6;color:#b9b5d3">{{ t.contact.p1 }}<br>{{ t.contact.p2 }}</p>
+        <div style="margin-top:56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:36px;align-items:start">
+          <form onSubmit="{{ submit }}" data-reveal="up" data-delay="300" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:22px;grid-column:span 1;min-width:0">
+            <label style="display:flex;flex-direction:column;gap:10px;font-size:14px;letter-spacing:.14em;color:#a7a3c2">{{ t.contact.name }}
+              <input required="" placeholder="{{ t.contact.namePh }}" style="font:inherit;font-size:17px;letter-spacing:0;color:#f1eefc;padding:17px 20px;border-radius:16px;border:1px solid rgba(124,108,240,.3);background:rgba(25,20,70,.55);backdrop-filter:blur(10px);outline:none;transition:border-color .3s,box-shadow .3s" style-focus="border-color:#2dd4bf;box-shadow:0 0 0 4px rgba(45,212,191,.15),0 0 30px rgba(45,212,191,.2)">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:10px;font-size:14px;letter-spacing:.14em;color:#a7a3c2">{{ t.contact.email }}
+              <input type="email" required="" placeholder="{{ t.contact.emailPh }}" style="font:inherit;font-size:17px;letter-spacing:0;color:#f1eefc;padding:17px 20px;border-radius:16px;border:1px solid rgba(124,108,240,.3);background:rgba(25,20,70,.55);backdrop-filter:blur(10px);outline:none;transition:border-color .3s,box-shadow .3s" style-focus="border-color:#2dd4bf;box-shadow:0 0 0 4px rgba(45,212,191,.15),0 0 30px rgba(45,212,191,.2)">
+            </label>
+            <label style="grid-column:1/-1;display:flex;flex-direction:column;gap:10px;font-size:14px;letter-spacing:.14em;color:#a7a3c2">{{ t.contact.company }}
+              <input placeholder="{{ t.contact.companyPh }}" style="font:inherit;font-size:17px;letter-spacing:0;color:#f1eefc;padding:17px 20px;border-radius:16px;border:1px solid rgba(124,108,240,.3);background:rgba(25,20,70,.55);backdrop-filter:blur(10px);outline:none;transition:border-color .3s,box-shadow .3s" style-focus="border-color:#2dd4bf;box-shadow:0 0 0 4px rgba(45,212,191,.15),0 0 30px rgba(45,212,191,.2)">
+            </label>
+            <label style="grid-column:1/-1;display:flex;flex-direction:column;gap:10px;font-size:14px;letter-spacing:.14em;color:#a7a3c2">{{ t.contact.area }}
+              <select required="" style="font:inherit;font-size:17px;letter-spacing:0;color:#cfcbe6;padding:17px 20px;border-radius:16px;border:1px solid rgba(124,108,240,.3);background:rgba(25,20,70,.55);outline:none;appearance:none;transition:border-color .3s,box-shadow .3s" style-focus="border-color:#2dd4bf;box-shadow:0 0 0 4px rgba(45,212,191,.15)">
+                <option value="">{{ t.contact.areaPh }}</option>
+                <sc-for list="{{ areas }}" as="o" hint-placeholder-count="0"><option value="{{ o.t }}">{{ o.t }}</option></sc-for>
+              </select>
+            </label>
+            <label style="grid-column:1/-1;display:flex;flex-direction:column;gap:10px;font-size:14px;letter-spacing:.14em;color:#a7a3c2">{{ t.contact.msg }}
+              <textarea rows="5" placeholder="{{ t.contact.msgPh }}" style="font:inherit;font-size:17px;letter-spacing:0;color:#f1eefc;padding:17px 20px;border-radius:16px;border:1px solid rgba(124,108,240,.3);background:rgba(25,20,70,.55);backdrop-filter:blur(10px);outline:none;resize:vertical;transition:border-color .3s,box-shadow .3s" style-focus="border-color:#2dd4bf;box-shadow:0 0 0 4px rgba(45,212,191,.15),0 0 30px rgba(45,212,191,.2)"></textarea>
+            </label>
+            <button type="submit" data-magnetic="" style="all:unset;grid-column:1/-1;cursor:pointer;display:flex;justify-content:center;align-items:center;gap:12px;padding:20px;border-radius:999px;background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6);font-family:'Plus Jakarta Sans';font-weight:800;font-size:18px;color:#0a0a18;overflow:hidden;box-shadow:0 14px 40px -12px rgba(45,212,191,.7)">
+              {{ t.contact.send }}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .7s cubic-bezier(.6,-0.3,.3,1.4);transform:{{ sendFx }}"><path d="{{ ic.send }}"></path></svg>
+            </button>
+          </form>
+          <div style="display:flex;flex-direction:column;gap:22px">
+            <div data-reveal="right" data-delay="400">
+              <div data-tilt="" style="position:relative;padding:30px;border-radius:24px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(160deg,rgba(40,34,110,.6),rgba(14,12,40,.75));backdrop-filter:blur(16px);overflow:hidden">
+                <div data-shine="" style="position:absolute;inset:0;opacity:0;transition:opacity .3s;pointer-events:none"></div>
+                <h3 style="margin:0 0 12px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:20px">{{ t.contact.callT }}</h3>
+                <p style="margin:0 0 22px;font-size:16px;line-height:1.65;color:#b9b5d3">{{ t.contact.callD }}</p>
+                <a href="mailto:thetrexmarketing@gmail.com" style="display:flex;align-items:center;gap:14px;color:#f1eefc;font-size:16px;margin-bottom:14px">
+                  <span style="width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:linear-gradient(140deg,rgba(45,212,191,.35),rgba(45,212,191,.06));border:1px solid rgba(255,255,255,.2);box-shadow:0 0 16px rgba(45,212,191,.35)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.mail }}"></path></svg></span>thetrexmarketing@gmail.com</a>
+                <a href="tel:+17865865061" style="display:flex;align-items:center;gap:14px;color:#f1eefc;font-size:16px">
+                  <span style="width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:linear-gradient(140deg,rgba(216,79,166,.35),rgba(216,79,166,.06));border:1px solid rgba(255,255,255,.2);box-shadow:0 0 16px rgba(216,79,166,.35)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.phone }}"></path></svg></span>+1 (786) 586-5061</a>
+              </div>
+            </div>
+            <div data-reveal="right" data-delay="500">
+              <div data-tilt="" style="position:relative;display:flex;align-items:center;gap:22px;padding:30px;border-radius:24px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(160deg,rgba(40,34,110,.6),rgba(14,12,40,.75));backdrop-filter:blur(16px);overflow:hidden">
+                <div data-shine="" style="position:absolute;inset:0;opacity:0;transition:opacity .3s;pointer-events:none"></div>
+                <div style="flex:1">
+                  <div style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:18px">{{ t.contact.replyT }}</div>
+                  <div style="margin:6px 0;font-family:'Plus Jakarta Sans';font-weight:800;font-size:46px;line-height:1;color:#2dd4bf;text-shadow:0 0 30px rgba(45,212,191,.5)">{{ t.contact.replyBig }}</div>
+                  <div style="font-size:15px;color:#a7a3c2">{{ t.contact.replyD }}</div>
+                </div>
+                <div data-spin="30" style="width:64px;height:64px;flex:none;border-radius:50%;border:2px dashed rgba(45,212,191,.5);display:grid;place-items:center">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.clock }}"></path></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+  </main>
+
+  <footer style="position:relative;z-index:2;border-top:1px solid rgba(255,255,255,.07);background:rgba(12,10,34,.8);backdrop-filter:blur(14px)">
+    <div style="max-width:1200px;margin:0 auto;padding:30px clamp(20px,5vw,56px);display:flex;flex-wrap:wrap;align-items:center;gap:20px 40px">
+      <button onClick="{{ goHome }}" data-magnetic="" style="all:unset;cursor:pointer;position:relative;width:40px;height:40px;border-radius:12px;overflow:hidden;background:#2a1f48;border:1px solid rgba(255,255,255,.15)">
+        <img src="assets/trex-dino.png" alt="Trex" style="position:absolute;width:180px;left:-74px;top:-84px">
+      </button>
+      <nav style="display:flex;flex-wrap:wrap;gap:6px 26px">
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="4">
+          <button onClick="{{ n.go }}" style="all:unset;cursor:pointer;font-size:16px;color:#b9b5d3" style-hover="color:#2dd4bf">{{ n.label }}</button>
+        </sc-for>
+      </nav>
+      <div style="margin-left:auto;font-size:15px;color:#77738f">{{ t.footer }}</div>
+    </div>
+  </footer>
+
+  <div ref="{{ veilRef }}" style="position:fixed;inset:0;z-index:80;visibility:hidden;pointer-events:none;transform:translate3d(0,100%,0);background:radial-gradient(circle at 30% 30%,#2b2a8a,#0c0a20 70%);display:grid;place-items:center">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:18px">
+      <div style="position:relative;width:96px;height:96px;border-radius:28px;overflow:hidden;background:#2a1f48;border:1px solid rgba(255,255,255,.3);box-shadow:0 0 60px rgba(255,255,255,.35)">
+        <img src="assets/trex-dino.png" alt="" style="position:absolute;width:430px;left:-178px;top:-200px">
+      </div>
+      <div style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(40px,6vw,80px);letter-spacing:-.04em;color:#fff">{{ veilLabel }}</div>
+    </div>
+  </div>
+
+  <sc-if value="{{ introOn }}" hint-placeholder-val="{{ true }}">
+    <div ref="{{ introRef }}" data-screen-label="Intro" style="position:fixed;inset:0;z-index:85;overflow:hidden;background:radial-gradient(ellipse 70% 60% at 50% 38%,#221a5e,#0d0b24 55%,#07071a);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(14px,2.4vh,26px);padding:24px;transition:opacity .9s ease,transform 1.1s cubic-bezier(.7,0,.3,1)">
+      <div style="position:absolute;left:-20%;right:-20%;bottom:-10%;height:45%;pointer-events:none;perspective:700px;-webkit-mask-image:linear-gradient(transparent,#000 50%);mask-image:linear-gradient(transparent,#000 50%)">
+        <div data-gridflow="" style="position:absolute;inset:0;transform:rotateX(64deg);transform-origin:50% 100%;background-image:linear-gradient(rgba(45,212,191,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(216,79,166,.3) 1px,transparent 1px);background-size:60px 60px"></div>
+      </div>
+      <div style="position:relative;width:min(80vw,50vh);aspect-ratio:1/1.05">
+        <div style="position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle,rgba(56,120,255,.4),rgba(216,79,166,.14) 45%,transparent 68%);filter:blur(18px);pointer-events:none"></div>
+        <div style="position:absolute;left:0;top:0;width:30px;height:30px;border-left:2px solid #2dd4bf;border-top:2px solid #2dd4bf;pointer-events:none"></div>
+        <div style="position:absolute;right:0;top:0;width:30px;height:30px;border-right:2px solid #d84fa6;border-top:2px solid #d84fa6;pointer-events:none"></div>
+        <div style="position:absolute;left:0;bottom:0;width:30px;height:30px;border-left:2px solid #d84fa6;border-bottom:2px solid #d84fa6;pointer-events:none"></div>
+        <div style="position:absolute;right:0;bottom:0;width:30px;height:30px;border-right:2px solid #2dd4bf;border-bottom:2px solid #2dd4bf;pointer-events:none"></div>
+        <canvas data-pixel="" data-intro="" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
+      </div>
+      <div data-glitch="" style="position:relative;display:flex;flex-direction:column;align-items:center;line-height:1">
+        <span style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(46px,7vw,92px);letter-spacing:.08em;background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 24px rgba(124,108,240,.5))">TREX</span>
+        <span style="margin-top:8px;font-size:clamp(12px,1.2vw,15px);letter-spacing:.6em;color:#cfcbe6;padding-left:.6em">MARKETING</span>
+      </div>
+      <div style="font-size:13px;letter-spacing:.1em;color:#8f8bab">{{ t.hero.badge }}</div>
+      <div ref="{{ introBtnRef }}" style="position:relative;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px;opacity:0;transition:opacity .6s ease">
+        <div style="display:flex;padding:4px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);backdrop-filter:blur(12px)">
+          <button onClick="{{ setEs }}" style="all:unset;cursor:pointer;padding:10px 16px;border-radius:999px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;color:{{ esColor }};background:{{ esBg }};transition:background .3s,color .3s">ES</button>
+          <button onClick="{{ setEn }}" style="all:unset;cursor:pointer;padding:10px 16px;border-radius:999px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;color:{{ enColor }};background:{{ enBg }};transition:background .3s,color .3s">EN</button>
+        </div>
+        <button onClick="{{ enterSite }}" data-magnetic="" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:12px;padding:18px 36px;border-radius:999px;background:linear-gradient(90deg,#2dd4bf,#9aa0c3,#d84fa6);font-family:'Plus Jakarta Sans';font-weight:800;font-size:18px;letter-spacing:.06em;color:#0a0a18;box-shadow:0 14px 50px -10px rgba(45,212,191,.8)" style-hover="box-shadow:0 18px 60px -6px rgba(216,79,166,.9)">{{ t.intro.enter }}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="{{ ic.arrow }}"></path></svg></button>
+      </div>
+      <div style="position:absolute;left:clamp(20px,4vw,48px);right:clamp(20px,4vw,48px);bottom:clamp(18px,3vh,32px);display:flex;align-items:center;gap:16px;font-family:'Plus Jakarta Sans';font-weight:700;font-size:13px;letter-spacing:.2em;color:#8f8bab">
+        <span>{{ t.intro.loading }}</span>
+        <div style="flex:1;height:2px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden"><div ref="{{ introBarRef }}" style="height:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,#2dd4bf,#d84fa6);box-shadow:0 0 10px #2dd4bf"></div></div>
+        <span ref="{{ introPctRef }}" style="min-width:44px;text-align:right;color:#2dd4bf">0%</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showCursor }}" hint-placeholder-val="{{ false }}">
+    <div ref="{{ ringRef }}" style="position:fixed;left:0;top:0;width:560px;height:560px;border-radius:50%;z-index:1;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(circle,rgba(124,108,240,.22),rgba(45,212,191,.08) 35%,transparent 65%);mix-blend-mode:screen"></div>
+    <div data-trail="0" style="position:fixed;left:0;top:0;width:7px;height:7px;z-index:90;pointer-events:none;opacity:0;background:#2dd4bf;box-shadow:0 0 8px #2dd4bf"></div>
+    <div data-trail="1" style="position:fixed;left:0;top:0;width:7px;height:7px;z-index:90;pointer-events:none;opacity:0;background:#d84fa6;box-shadow:0 0 8px #d84fa6"></div>
+    <div data-trail="2" style="position:fixed;left:0;top:0;width:7px;height:7px;z-index:90;pointer-events:none;opacity:0;background:#2dd4bf;box-shadow:0 0 8px #2dd4bf"></div>
+    <div data-trail="3" style="position:fixed;left:0;top:0;width:6px;height:6px;z-index:90;pointer-events:none;opacity:0;background:#d84fa6;box-shadow:0 0 8px #d84fa6"></div>
+    <div data-trail="4" style="position:fixed;left:0;top:0;width:6px;height:6px;z-index:90;pointer-events:none;opacity:0;background:#2dd4bf;box-shadow:0 0 8px #2dd4bf"></div>
+    <div data-trail="5" style="position:fixed;left:0;top:0;width:6px;height:6px;z-index:90;pointer-events:none;opacity:0;background:#d84fa6;box-shadow:0 0 8px #d84fa6"></div>
+    <div data-trail="6" style="position:fixed;left:0;top:0;width:5px;height:5px;z-index:90;pointer-events:none;opacity:0;background:#2dd4bf;box-shadow:0 0 8px #2dd4bf"></div>
+    <div data-trail="7" style="position:fixed;left:0;top:0;width:5px;height:5px;z-index:90;pointer-events:none;opacity:0;background:#d84fa6;box-shadow:0 0 8px #d84fa6"></div>
+    <div data-trail="8" style="position:fixed;left:0;top:0;width:5px;height:5px;z-index:90;pointer-events:none;opacity:0;background:#2dd4bf;box-shadow:0 0 8px #2dd4bf"></div>
+    <div data-trail="9" style="position:fixed;left:0;top:0;width:4px;height:4px;z-index:90;pointer-events:none;opacity:0;background:#d84fa6;box-shadow:0 0 8px #d84fa6"></div>
+    <div ref="{{ dotRef }}" style="position:fixed;left:0;top:0;z-index:91;pointer-events:none;opacity:0;color:#ffffff;transform-origin:0 0;filter:drop-shadow(0 0 6px rgba(45,212,191,.9)) drop-shadow(2px 2px 0 rgba(216,79,166,.9))">
+      <svg width="24" height="34" viewBox="0 0 12 17" shape-rendering="crispEdges"><path d="M0 0h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1H7v1h1v1h1v2H8v1H7v-1H6v-2H5v-1H4v1H3v1H2v1H1v1H0z" fill="#0a0a18"></path><path d="M1 2v12h1v-1h1v-1h1v-1h1v1h1v2h1v2h1v-2H7v-2H6v-1h4v-1H9V9H8V8H7V7H6V6H5V5H4V4H3V3H2V2z" fill="currentColor"></path></svg>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showIntro&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Efectos&quot;},&quot;intensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:8,&quot;min&quot;:1,&quot;max&quot;:10,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Efectos&quot;},&quot;customCursor&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Efectos&quot;},&quot;glitch&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Efectos&quot;},&quot;videoUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Videos&quot;},&quot;beforeVideo&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;assets/antes-trex.mp4&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Videos&quot;},&quot;afterVideo&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;assets/con-trex.mp4&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Videos&quot;}}">
+class Component extends DCLogic {
+  variant = 'aurora';
+  state = { page: 'home', lang: 'es', open: { 0: true }, ready: !!window.TREX_I18N, menu: false, narrow: false, sent: false, veilLabel: '', fine: true, sel: 0, sound: null, introOn: this.props.showIntro !== false };
+  rootRef = React.createRef(); canvasRef = React.createRef(); progressRef = React.createRef(); headerRef = React.createRef();
+  veilRef = React.createRef(); ringRef = React.createRef(); dotRef = React.createRef(); packsRef = React.createRef(); iframeRef = React.createRef(); videoRef = React.createRef(); introRef = React.createRef(); panelRef = React.createRef(); introBtnRef = React.createRef(); introBarRef = React.createRef(); introPctRef = React.createRef();
+  pages = ['home', 'services', 'work', 'pricing', 'contact'];
+
+  componentDidMount() {
+    const saved = {}; try { saved.page = localStorage.getItem('trex-page'); saved.lang = localStorage.getItem('trex-lang'); } catch (e) {}
+    const upd = { narrow: innerWidth < 1040, fine: matchMedia('(pointer:fine)').matches };
+    if (this.pages.includes(saved.page)) upd.page = saved.page;
+    if (saved.lang === 'en' || saved.lang === 'es') upd.lang = saved.lang;
+    this.setState(upd);
+    if (!window.TREX_I18N) this._poll = setInterval(() => { if (window.TREX_I18N) { clearInterval(this._poll); this.setState({ ready: true }); } }, 40);
+    this.onResize = () => { this.setState({ narrow: innerWidth < 1040 }); this.sizeCanvas(); clearTimeout(this._pxR); this._pxR = setTimeout(() => { this.pxList = []; const r = this.rootRef.current; if (r) r.querySelectorAll('[data-pixel]').forEach(c => { c.__px = 0; }); this.bind(); }, 200); };
+    addEventListener('resize', this.onResize);
+    if (this.state.introOn) { this.introGate = true; this._introT0 = performance.now(); document.body.style.overflow = 'hidden'; }
+    this.initFx();
+    setTimeout(() => this.bind(), 60);
+  }
+  componentDidUpdate(pp, ps) {
+    if (ps.page !== this.state.page || ps.ready !== this.state.ready || ps.lang !== this.state.lang || ps.narrow !== this.state.narrow || ps.open !== this.state.open || ps.introOn !== this.state.introOn) requestAnimationFrame(() => this.bind());
+    if (pp.intensity !== this.props.intensity) this.sizeCanvas();
+    if (ps.sel !== this.state.sel || ps.lang !== this.state.lang) { const pn = this.panelRef.current; if (pn && pn.animate) pn.querySelectorAll('[data-anim]').forEach((n, i) => n.animate([{ opacity: 0, transform: 'translateY(14px)', filter: 'blur(4px)' }, { opacity: 1, transform: 'none', filter: 'none' }], { duration: 520, delay: i * 32, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' })); }
+    if (ps.lang !== this.state.lang) document.documentElement.lang = this.state.lang;
+    if (ps.sound !== this.state.sound && this._vel) {}
+    if (pp.beforeVideo !== this.props.beforeVideo || pp.afterVideo !== this.props.afterVideo) { this._vr = {}; this.forceUpdate(); }
+    const vd = this.videoRef.current; if (vd) vd.muted = true; if (vd && this.props.videoUrl && vd.getAttribute('src') !== this.props.videoUrl) { vd.src = this.props.videoUrl; vd.play && vd.play().catch(() => {}); }
+    this.syncCursorClass();
+  }
+  componentWillUnmount() {
+    cancelAnimationFrame(this.raf); clearInterval(this._poll);
+    removeEventListener('resize', this.onResize); removeEventListener('pointermove', this.onMove);
+    if (this.io) this.io.disconnect(); document.body.classList.remove('trex-cursor');
+  }
+  syncCursorClass() { document.body.classList.toggle('trex-cursor', this.cursorOn()); }
+  cursorOn() { return this.props.customCursor !== false && this.state.fine; }
+
+  sizeCanvas() {
+    const c = this.canvasRef.current; if (!c) return;
+    const dpr = Math.min(devicePixelRatio || 1, 1.5); c.width = innerWidth * dpr; c.height = innerHeight * dpr;
+    const ctx = c.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); this.ctx = ctx;
+    const k = (this.props.intensity ?? 8); const N = Math.round(30 + k * 11);
+    const cols = ['#2dd4bf', '#d84fa6', '#7c6cf0', '#5b8cff'];
+    this.parts = Array.from({ length: N }, () => ({ x: Math.random() * innerWidth, y: Math.random() * innerHeight, vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35, r: Math.random() * 1.8 + .6, z: Math.random() * .5 + .1, c: cols[(Math.random() * 4) | 0] }));
+    this.blobs = [0, 1, 2, 3].map(i => ({ c: ['45,212,191', '216,79,166', '124,108,240', '40,90,230'][i], ph: i * 1.7, r: .38 + i * .06 }));
+    this.stars = Array.from({ length: 90 + k * 8 }, () => ({ x: Math.random(), y: Math.random(), r: Math.random() * 1.3 + .2, ph: Math.random() * 6 }));
+  }
+
+  initFx() {
+    const st = this.fx = { mx: innerWidth / 2, my: innerHeight / 2, rx: innerWidth / 2, ry: innerHeight / 2, smx: 0, smy: 0, ring: 1, hot: false, mag: null, tilt: null, gEl: null, gUntil: 0, glitchAt: performance.now() + 1800 };
+    this.sizeCanvas(); this.syncCursorClass();
+    const resetEl = (el) => { el.style.transition = 'transform .6s cubic-bezier(.2,.8,.2,1)'; el.style.transform = ''; const sh = el.querySelector('[data-shine]'); if (sh) sh.style.opacity = '0'; };
+    this.onMove = (e) => {
+      st.pv = Math.min(40, (st.pv || 0) + Math.hypot(e.clientX - st.mx, e.clientY - st.my)); st.mx = e.clientX; st.my = e.clientY; if (e.pointerType !== 'touch' || e.buttons) st.ptrOff = false;
+      if (!st.moved) { st.moved = 1; st.rx = st.mx; st.ry = st.my; [this.ringRef.current, this.dotRef.current].forEach(n => n && (n.style.opacity = '1')); }
+      const el = e.target && e.target.closest ? e.target : null;
+      const mag = el && el.closest('[data-magnetic]'); const tilt = el && el.closest('[data-tilt]');
+      if (mag !== st.mag) { if (st.mag) resetEl(st.mag); st.mag = mag; }
+      if (tilt !== st.tilt) { if (st.tilt) resetEl(st.tilt); st.tilt = tilt; }
+      st.hot = !!(el && el.closest('a,button,input,select,textarea,label,[data-tilt]'));
+      if (tilt) {
+        const r = tilt.getBoundingClientRect(), px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+        tilt.style.transition = 'transform .15s ease-out';
+        tilt.style.transform = `perspective(1000px) rotateX(${(.5 - py) * 9}deg) rotateY(${(px - .5) * 11}deg) scale(1.015)`;
+        const sh = tilt.querySelector('[data-shine]'); if (sh) { sh.style.opacity = '1'; sh.style.background = `radial-gradient(420px circle at ${px * 100}% ${py * 100}%, rgba(255,255,255,.13), transparent 45%)`; }
+      }
+      if (mag) {
+        const r = mag.getBoundingClientRect(), dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+        mag.style.transition = 'transform .25s cubic-bezier(.2,.8,.2,1)'; mag.style.transform = `translate(${dx * .22}px, ${dy * .32}px)`;
+      }
+      const f = this.iframeRef.current;
+      if (f && f.contentWindow) { const r = f.getBoundingClientRect(); f.contentWindow.postMessage({ trexPointer: 1, x: Math.max(-1.5, Math.min(1.5, ((e.clientX - r.left) / r.width - .5) * 2)), y: Math.max(-1.5, Math.min(1.5, ((e.clientY - r.top) / r.height - .5) * 2)) }, '*'); }
+    };
+    addEventListener('pointermove', this.onMove, { passive: true });
+    this.onPtrEnd = (e) => { if (e.pointerType === 'touch') st.ptrOff = true; };
+    this.onPtrDown = () => { st.ptrOff = false; st.moved = 1; };
+    addEventListener('pointerup', this.onPtrEnd); addEventListener('pointercancel', this.onPtrEnd); addEventListener('pointerdown', this.onPtrDown); document.addEventListener('pointerleave', () => { st.ptrOff = true; });
+    const t0 = performance.now();
+    const loop = (now) => {
+      this.raf = requestAnimationFrame(loop); this._ticks = (this._ticks || 0) + 1;
+      const t = (now - t0) / 1000, vh = innerHeight, vw = innerWidth, sy = scrollY;
+      st.rx += (st.mx - st.rx) * .16; st.ry += (st.my - st.ry) * .16; st.ring += ((st.hot ? 1.8 : 1) - st.ring) * .15;
+      st.smx += ((st.mx / vw - .5) - st.smx) * .06; st.smy += ((st.my / vh - .5) - st.smy) * .06;
+      const ring = this.ringRef.current, dot = this.dotRef.current;
+      if (dot) { st.cs = (st.cs || 1) + ((st.hot ? 1.25 : 1) - (st.cs || 1)) * .2; dot.style.transform = `translate(${st.mx - 1}px,${st.my - 1}px) scale(${st.cs})`; dot.style.color = st.hot ? '#2dd4bf' : '#ffffff'; }
+      st.hist = st.hist || []; st.hist.unshift([st.mx, st.my]); if (st.hist.length > 32) st.hist.length = 32;
+      if (!this._trail) this._trail = Array.from(document.querySelectorAll('[data-trail]'));
+      if (st.moved) this._trail.forEach((n, i) => { const h = st.hist[Math.min(st.hist.length - 1, (i + 1) * 3)]; const sp = Math.hypot(st.mx - h[0], st.my - h[1]); n.style.opacity = String(Math.min(1, sp / 40) * (1 - i / 11)); n.style.transform = `translate(${Math.round(h[0] / 4) * 4}px,${Math.round(h[1] / 4) * 4}px)`; });
+      st.sx = (st.sx ?? st.mx) + (st.mx - (st.sx ?? st.mx)) * .07; st.sy2 = (st.sy2 ?? st.my) + (st.my - (st.sy2 ?? st.my)) * .07;
+      if (ring) ring.style.transform = `translate(${st.sx - 280}px,${st.sy2 - 280}px)`;
+      const pr = this.progressRef.current, max = document.documentElement.scrollHeight - vh;
+      if (pr) pr.style.transform = `scaleX(${max > 0 ? sy / max : 0})`;
+      const hd = this.headerRef.current; if (hd) hd.style.background = sy > 20 ? 'rgba(10,10,24,.78)' : 'rgba(10,10,24,.35)';
+      const N = this.nodes; if (N) {
+        N.parallax.forEach(el => { const p = el.parentElement; if (!p) return; const r = p.getBoundingClientRect(); el.style.transform = `translate3d(0,${(r.top + r.height / 2 - vh / 2) * (+el.dataset.parallax)}px,0)`; });
+        N.depth.forEach(el => { const d = +el.dataset.depth; el.style.transform = `translate3d(${st.smx * d}px,${st.smy * d}px,0)`; });
+        N.float.forEach(el => { const a = +el.dataset.float || 10, ph = +el.dataset.phase || 0; el.style.transform = `translate3d(0,${Math.sin(t * 1.3 + ph) * a}px,0) rotate(${Math.sin(t * .8 + ph) * a * .12}deg)`; });
+        N.spin.forEach(el => { el.style.transform = `rotate(${(t * (+el.dataset.spin)) % 360}deg)`; });
+        N.marquee.forEach(el => { const w = el.scrollWidth / 2; if (!w) return; el.__x = (el.__x || 0) - (+el.dataset.marquee) * (1 + Math.min(3, Math.abs(sy - (this._lsy || sy)) * .15)); if (el.__x <= -w) el.__x += w; if (el.__x > 0) el.__x -= w; el.style.transform = `translate3d(${el.__x}px,0,0)`; });
+        N.grid && N.grid.forEach(el => { el.style.backgroundPosition = `0 ${(t * 28) % 64}px`; });
+        N.shimmer.forEach(el => { el.style.backgroundPosition = `${(t * 18) % 200}% 50%`; });
+        N.pulse.forEach(el => { const s = 1 + Math.sin(t * 4) * .25; el.style.transform = `scale(${s})`; el.style.boxShadow = `0 0 ${8 + Math.sin(t * 4) * 6}px #2dd4bf`; });
+        N.zoom.forEach(el => { const r = el.parentElement.getBoundingClientRect(); const p = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height))); el.style.transform = `scale(${1.18 - p * .2}) translate3d(0,${(p - .5) * 60}px,0)`; });
+        if (this.props.glitch !== false) {
+          if (!st.gEl && now > st.glitchAt && N.glitch.length) {
+            const vis = N.glitch.filter(el => { const r = el.getBoundingClientRect(); return r.bottom > 0 && r.top < vh; });
+            if (vis.length) { st.gEl = vis[(Math.random() * vis.length) | 0]; st.gUntil = now + 280; }
+            st.glitchAt = now + 2600 + Math.random() * 2600;
+          }
+          if (st.gEl) {
+            if (now < st.gUntil) { const a = (Math.random() - .5) * 10; st.gEl.style.textShadow = `${a}px 0 rgba(45,212,191,.85), ${-a}px 0 rgba(216,79,166,.85)`; st.gEl.style.transform = `translate3d(${(Math.random() - .5) * 5}px,0,0) skewX(${(Math.random() - .5) * 7}deg)`; }
+            else { st.gEl.style.textShadow = ''; st.gEl.style.transform = ''; st.gEl = null; }
+          }
+        }
+      }
+      this._lsy = sy;
+      this.drawBg(t, vw, vh, sy, st);
+      st.pv = (st.pv || 0) * .86;
+      this.drawPixels(now, st);
+      if (this.introGate && this._introT0) { const p = Math.min(1, (now - this._introT0) / 2400); const b = this.introBarRef.current, c = this.introPctRef.current, bt = this.introBtnRef.current; if (b) b.style.transform = 'scaleX(' + p + ')'; if (c) c.textContent = Math.round(p * 100) + '%'; if (bt && p >= 1) bt.style.opacity = '1'; }
+    };
+    this.raf = requestAnimationFrame(loop);
+  }
+
+  drawBg(t, w, h, sy, st) {
+    const ctx = this.ctx; if (!ctx) return;
+    ctx.clearRect(0, 0, w, h);
+    if (this.variant === 'aurora') {
+      ctx.globalCompositeOperation = 'lighter';
+      this.blobs.forEach((b, i) => {
+        const x = w * (.5 + Math.sin(t * .13 + b.ph) * .38 + st.smx * .08 * (i + 1)), y = h * (.5 + Math.cos(t * .11 + b.ph * 1.3) * .36) - (sy * .05 * (i + 1)) % h;
+        const R = Math.max(w, h) * b.r, g = ctx.createRadialGradient(x, y, 0, x, y, R);
+        g.addColorStop(0, `rgba(${b.c},.20)`); g.addColorStop(1, `rgba(${b.c},0)`); ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+      });
+      this.stars.forEach(s => { const a = .25 + .55 * Math.abs(Math.sin(t * 1.2 + s.ph)); ctx.fillStyle = `rgba(230,235,255,${a})`; const y = ((s.y * h - sy * .1 * s.r) % h + h) % h; ctx.beginPath(); ctx.arc(s.x * w, y, s.r, 0, 6.283); ctx.fill(); });
+      ctx.globalCompositeOperation = 'source-over';
+      return;
+    }
+    const P = this.parts, mx = st.mx, my = st.my;
+    for (const p of P) {
+      p.x += p.vx; p.y += p.vy;
+      const dx = p.x - mx, dy = (p.y) - my, d2 = dx * dx + dy * dy;
+      if (d2 < 22000) { const f = (22000 - d2) / 22000 * .6; p.x += dx * f * .02; p.y += dy * f * .02; }
+      if (p.x < -20) p.x = w + 20; if (p.x > w + 20) p.x = -20; if (p.y < -20) p.y = h + 20; if (p.y > h + 20) p.y = -20;
+      p.sy = ((p.y - sy * p.z) % h + h) % h;
+    }
+    ctx.lineWidth = .7;
+    for (let i = 0; i < P.length; i++) {
+      const a = P[i];
+      for (let j = i + 1; j < P.length; j++) {
+        const b = P[j], dx = a.x - b.x, dy = a.sy - b.sy, d2 = dx * dx + dy * dy;
+        if (d2 < 13000) { ctx.strokeStyle = `rgba(124,140,240,${(1 - d2 / 13000) * .28})`; ctx.beginPath(); ctx.moveTo(a.x, a.sy); ctx.lineTo(b.x, b.sy); ctx.stroke(); }
+      }
+      const dx = a.x - mx, dy = a.sy - my, d2 = dx * dx + dy * dy;
+      if (d2 < 34000) { ctx.strokeStyle = `rgba(216,79,166,${(1 - d2 / 34000) * .5})`; ctx.beginPath(); ctx.moveTo(a.x, a.sy); ctx.lineTo(mx, my); ctx.stroke(); }
+    }
+    for (const p of P) {
+      ctx.fillStyle = p.c; ctx.globalAlpha = .9; ctx.beginPath(); ctx.arc(p.x, p.sy, p.r, 0, 6.283); ctx.fill();
+      ctx.globalAlpha = .12; ctx.beginPath(); ctx.arc(p.x, p.sy, p.r * 5, 0, 6.283); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  bind() {
+    const root = this.rootRef.current; if (!root) return;
+    const q = s => Array.from(root.querySelectorAll(s));
+    this.nodes = { parallax: q('[data-parallax]'), depth: q('[data-depth]'), float: q('[data-float]'), spin: q('[data-spin]'), marquee: q('[data-marquee]'), shimmer: q('[data-shimmer]'), zoom: q('[data-zoom]'), glitch: q('[data-glitch]'), pulse: q('[data-pulse]'), grid: q('[data-gridflow]') };
+    if (!this.io) this.io = new IntersectionObserver(ents => ents.forEach(en => { if (en.isIntersecting) { this.reveal(en.target); this.io.unobserve(en.target); } }), { threshold: .1, rootMargin: '0px 0px -4% 0px' });
+    root.querySelectorAll('[data-pixel]').forEach(cv => { if (!cv.__ro && window.ResizeObserver) { cv.__ro = new ResizeObserver(() => { const X = (this.pxList || []).find(q => q.cv === cv); if (cv.clientWidth && (!X || Math.abs(X.W - cv.clientWidth) > 2)) { cv.__px = 1; this.initPixels(cv); } }); cv.__ro.observe(cv); } if (!cv.__px) { cv.__px = 1; this.initPixels(cv); } });
+    const INIT = { up: 'translate3d(0,46px,0)', left: 'translate3d(-70px,0,0)', right: 'translate3d(70px,0,0)', scale: 'scale(.86)', line: 'scaleX(0)', mask: 'translate3d(0,108%,0)' };
+    q('[data-reveal]').forEach(el => { if (el.__rv) return; el.__rv = 1; el.style.opacity = '0'; el.style.transform = INIT[el.dataset.reveal] || INIT.up; this.io.observe(el); });
+    q('[data-count]').forEach(el => { if (el.__ct) return; el.__ct = 1; this.io.observe(el); });
+    clearTimeout(this._rvT);
+    this._rvT = setTimeout(() => q('[data-reveal],[data-count]').forEach(el => { if (el.__done) return; const r = el.getBoundingClientRect(); if (r.top < innerHeight && r.bottom > 0) { this.reveal(el); this.io.unobserve(el); } }), 250);
+    if (!this._scrollFb) { this._scrollFb = () => { clearTimeout(this._sfT); this._sfT = setTimeout(() => { const root2 = this.rootRef.current; if (!root2) return; root2.querySelectorAll('[data-reveal],[data-count]').forEach(el => { if (el.__done) return; const r = el.getBoundingClientRect(); if (r.top < innerHeight * .96 && r.bottom > 0) this.reveal(el); }); }, 60); }; addEventListener('scroll', this._scrollFb, { passive: true }); }
+  }
+  initPixels(cv) {
+    const img = new Image(); img.src = 'assets/trex-dino.png';
+    img.onload = () => {
+      if (!cv.isConnected) return;
+      const W = cv.clientWidth, H = cv.clientHeight; if (!W || !H) { cv.__px = 0; cv.__tries = (cv.__tries || 0) + 1; if (cv.__tries < 40) setTimeout(() => this.bind(), 150); return; }
+      const dpr = Math.min(devicePixelRatio || 1, 2); cv.width = W * dpr; cv.height = H * dpr;
+      const ctx = cv.getContext('2d');
+      const cols = Math.round(W / Math.max(2.2, W / 230)), cell = W / cols, rows = Math.floor(H / cell);
+      const sc = Math.min(W / img.width, H / img.height) * 1.06, iw = img.width * sc, ih = img.height * sc, ix = (W - iw) / 2, iy = (H - ih) / 2;
+      const mk = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+      const low = mk(cols, rows), lo = low.getContext('2d');
+      lo.drawImage(img, ix / cell, iy / cell, iw / cell, ih / cell);
+      const d = lo.getImageData(0, 0, cols, rows).data, P = [];
+      const mask = mk(cols, rows), mo = mask.getContext('2d'), md = mo.createImageData(cols, rows);
+      const N = cols * rows, bg = new Uint8Array(N), isBg = (k) => { const i = k * 4, r = d[i], g = d[i + 1], b = d[i + 2], mx = Math.max(r, g, b), mn = Math.min(r, g, b), lum = (r + g + b) / 3; return d[i + 3] < 20 || lum < 62 || (mx - mn < 58 && lum < 150 && b - r < 75); };
+      const stack = [];
+      for (let x = 0; x < cols; x++) { stack.push(x, (rows - 1) * cols + x); }
+      for (let y = 0; y < rows; y++) { stack.push(y * cols, y * cols + cols - 1); }
+      while (stack.length) { const k = stack.pop(); if (bg[k] || !isBg(k)) continue; bg[k] = 1; const x = k % cols, y = (k / cols) | 0; if (x > 0) stack.push(k - 1); if (x < cols - 1) stack.push(k + 1); if (y > 0) stack.push(k - cols); if (y < rows - 1) stack.push(k + cols); }
+      for (let k = 0; k < N; k++) if (!bg[k]) { let c = 0; const x = k % cols, y = (k / cols) | 0; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { const xx = x + dx, yy = y + dy; if (xx >= 0 && yy >= 0 && xx < cols && yy < rows && !bg[yy * cols + xx]) c++; } if (c < 3) bg[k] = 1; }
+      for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) {
+        const i = (y * cols + x) * 4, r = d[i], g = d[i + 1], b = d[i + 2];
+        if (!bg[y * cols + x]) {
+          md.data[i + 3] = 255;
+          const ang = Math.random() * 6.283, rad = cols * (.4 + Math.random() * .9);
+          P.push({ hx: x, hy: y, x: cols / 2 + Math.cos(ang) * rad, y: rows / 2 + Math.sin(ang) * rad, vx: 0, vy: 0, col: (255 << 24) | (b << 16) | (g << 8) | r, hot: 0, alt: (x + y) & 1, dl: (y / rows) * 700 + Math.random() * 500, idx: y * cols + x, awake: 1 });
+        }
+      }
+      mo.putImageData(md, 0, 0);
+      const clean = mk(W * dpr, H * dpr), co = clean.getContext('2d');
+      co.drawImage(img, ix * dpr, iy * dpr, iw * dpr, ih * dpr);
+      co.globalCompositeOperation = 'destination-in'; co.imageSmoothingEnabled = true; co.drawImage(mask, 0, 0, W * dpr, H * dpr);
+      const holes = mk(cols, rows), ho = holes.getContext('2d'), hd = ho.createImageData(cols, rows), hb = new Uint32Array(hd.data.buffer);
+      const parts = mk(cols, rows), po = parts.getContext('2d'), pd = po.createImageData(cols, rows), pb = new Uint32Array(pd.data.buffer);
+      const TEAL = (255 << 24) | (0xbf << 16) | (0xd4 << 8) | 0x2d, PINK = (255 << 24) | (0xa6 << 16) | (0x4f << 8) | 0xd8;
+      this.pxList = (this.pxList || []).filter(q => q.cv.isConnected && q.cv !== cv);
+      this.pxList.push({ cv, ctx, P, cols, rows, cell, W, H, dpr, clean, holes, ho, hd, hb, parts, po, pd, pb, TEAL, PINK, t0: performance.now(), g: null, gEnd: 0 });
+      const XX = this.pxList[this.pxList.length - 1];
+      if (cv.dataset.intro != null) this._introPx = XX;
+      cv.onpointerdown = (e) => { const r = cv.getBoundingClientRect(), mx = (e.clientX - r.left) / cell, my = (e.clientY - r.top) / cell, RB = 90;
+        P.forEach(p => { const dx = p.x - mx, dy = p.y - my, dd = Math.sqrt(dx * dx + dy * dy) || 1; if (dd < RB) { const f = (1 - dd / RB) * 16; p.vx += dx / dd * f + (Math.random() - .5) * 3; p.vy += dy / dd * f + (Math.random() - .5) * 3; p.hot = 1; p.awake = 1; } }); };
+    };
+  }
+  drawPixels(now, st) { (this.pxList || []).forEach(X => this.drawPx(X, now, st)); }
+  burstAll(X, k) { X.P.forEach(p => { const dx = p.x - X.cols / 2, dy = p.y - X.rows / 2, dd = Math.sqrt(dx * dx + dy * dy) || 1; p.vx += dx / dd * k * (.5 + Math.random()) + (Math.random() - .5) * 4; p.vy += dy / dd * k * (.5 + Math.random()) + (Math.random() - .5) * 4; p.hot = 1; p.awake = 1; }); }
+  drawPx(X, now, st) {
+    if (!X.cv.isConnected) return;
+    const rect = X.cv.getBoundingClientRect(); if (rect.bottom < 0 || rect.top > innerHeight) return;
+    const { ctx, cell, cols, rows, W, H, dpr, hb, pb } = X, el = now - X.t0;
+    const bob = Math.sin(now / 1000 * 1.2) * 7, bobG = bob / cell;
+    const ptrOn = st.moved && !st.ptrOff, mx = ptrOn ? (st.mx - rect.left) / cell : -1e5, my = ptrOn ? (st.my - rect.top) / cell - bobG : -1e5, R = Math.max(70, W * .13) / cell, R2 = R * R, act = Math.min(1, (st.pv || 0) / 14), F = 5.5 / cell * act;
+    hb.fill(0); pb.fill(0); let moving = 0;
+    for (const p of X.P) {
+      const dx = p.x - mx, dy = p.y - my, d2 = dx * dx + dy * dy, near = act > .05 && d2 < R2;
+      if (el > p.dl && (p.awake || near)) {
+        let ax = (p.hx - p.x) * .07, ay = (p.hy - p.y) * .07;
+        if (near) { const dd = Math.sqrt(d2) || 1, f = (1 - d2 / R2) * F * 6; ax += dx / dd * f; ay += dy / dd * f; p.hot = Math.min(1, p.hot + .2); }
+        else p.hot *= .94;
+        p.vx = (p.vx + ax) * .8; p.vy = (p.vy + ay) * .8; p.x += p.vx; p.y += p.vy;
+        const off = Math.abs(p.x - p.hx) + Math.abs(p.y - p.hy);
+        if (!near && off < .15 && Math.abs(p.vx) + Math.abs(p.vy) < .02) { p.x = p.hx; p.y = p.hy; p.vx = p.vy = 0; p.awake = 0; p.hot = 0; }
+        else p.awake = 1;
+      }
+      const ox = Math.round(p.x), oy = Math.round(p.y);
+      if (ox !== p.hx || oy !== p.hy) {
+        moving++; hb[p.idx] = 0xff000000;
+        if (ox >= 0 && oy >= 0 && ox < cols && oy < rows) pb[oy * cols + ox] = el > p.dl ? (p.hot > .35 ? (p.alt ? X.TEAL : X.PINK) : p.col) : (p.col & 0x00ffffff) | (60 << 24);
+      }
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+    ctx.save(); ctx.translate(0, bob);
+    ctx.drawImage(X.clean, 0, 0, W, H);
+    if (X.g && now > X.gEnd) X.g = null;
+    if (!X.g && el > 2200 && Math.random() < .01) { X.g = { y: Math.random() * H, h: 6 + Math.random() * 36, dx: (Math.random() - .5) * 36 }; X.gEnd = now + 90 + Math.random() * 120; }
+    if (X.g) { const g = X.g; ctx.clearRect(0, g.y, W, g.h); ctx.drawImage(X.clean, 0, g.y * dpr, W * dpr, g.h * dpr, g.dx, g.y, W, g.h); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = .5; ctx.drawImage(X.clean, 0, g.y * dpr, W * dpr, g.h * dpr, g.dx + 5, g.y, W, g.h); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; }
+    if (moving) {
+      ctx.imageSmoothingEnabled = false;
+      X.ho.putImageData(X.hd, 0, 0); ctx.globalCompositeOperation = 'destination-out'; ctx.drawImage(X.holes, 0, 0, cols * cell, rows * cell);
+      ctx.globalCompositeOperation = 'source-over';
+      X.po.putImageData(X.pd, 0, 0); ctx.drawImage(X.parts, 0, 0, cols * cell, rows * cell);
+      ctx.imageSmoothingEnabled = true;
+    }
+    ctx.restore();
+  }
+  reveal(el) {
+    if (el.__done) return;
+    if (this.introGate && !(this.introRef.current && this.introRef.current.contains(el))) { (this._queued = this._queued || new Set()).add(el); return; }
+    el.__done = 1;
+    if (el.dataset.reveal) {
+      const d = +el.dataset.delay || 0, dur = el.dataset.reveal === 'mask' ? 1.1 : .95;
+      el.style.transition = this._ticks > 2 ? `opacity .8s cubic-bezier(.2,.8,.2,1) ${d}ms, transform ${dur}s cubic-bezier(.16,1,.3,1) ${d}ms` : 'none';
+      void el.offsetHeight; el.style.opacity = '1'; el.style.transform = 'none';
+    }
+    if (el.dataset.count != null) {
+      const n = +el.dataset.count, node = el.firstChild; if (!n || !node) return;
+      const t0 = performance.now(), step = () => { const p = Math.min(1, (performance.now() - t0) / 1800), e = 1 - Math.pow(1 - p, 4); node.nodeValue = String(Math.round(n * e)); if (p < 1) setTimeout(step, 16); };
+      step();
+    }
+  }
+
+  go(page, e) {
+    if (page === this.state.page) { scrollTo({ top: 0, behavior: 'smooth' }); this.setState({ menu: false }); return; }
+    try { localStorage.setItem('trex-page', page); } catch (er) {}
+    const v = this.veilRef.current, T = (window.TREX_I18N || {})[this.state.lang];
+    const labels = T ? { home: 'TREX', services: T.nav.services, work: T.nav.work, pricing: T.nav.pricing, contact: T.nav.contact } : {};
+    if (!v) { this.setState({ page, menu: false }); return; }
+    this.setState({ veilLabel: labels[page] || '' });
+    const ox = e && e.clientX != null ? e.clientX : innerWidth / 2, oy = e && e.clientY != null ? e.clientY : innerHeight / 2;
+    v.style.visibility = 'visible'; v.style.pointerEvents = 'auto';
+    if (this.variant === 'aurora') {
+      v.style.transition = 'none'; v.style.transform = 'none'; v.style.opacity = '1'; v.style.clipPath = `circle(0px at ${ox}px ${oy}px)`; v.offsetHeight;
+      v.style.transition = 'clip-path .65s cubic-bezier(.7,0,.3,1)'; v.style.clipPath = `circle(150vmax at ${ox}px ${oy}px)`;
+      setTimeout(() => { this.setState({ page, menu: false }); scrollTo(0, 0); v.style.transition = 'opacity .55s ease .1s'; v.style.opacity = '0'; setTimeout(() => { v.style.visibility = 'hidden'; v.style.pointerEvents = 'none'; }, 700); }, 680);
+    } else {
+      v.style.transition = 'none'; v.style.transform = 'translate3d(0,100%,0)'; v.offsetHeight;
+      v.style.transition = 'transform .55s cubic-bezier(.7,0,.3,1)'; v.style.transform = 'translate3d(0,0,0)';
+      setTimeout(() => { this.setState({ page, menu: false }); scrollTo(0, 0); v.style.transition = 'transform .65s cubic-bezier(.7,0,.3,1) .1s'; v.style.transform = 'translate3d(0,-100%,0)'; setTimeout(() => { v.style.visibility = 'hidden'; v.style.pointerEvents = 'none'; }, 800); }, 600);
+    }
+  }
+
+  toggleVid(k, e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    const root = this.rootRef.current; if (!root) return;
+    const vids = { beforeVideo: root.querySelector('video[data-k="beforeVideo"]'), afterVideo: root.querySelector('video[data-k="afterVideo"]') };
+    const el = vids[k]; if (!el) return;
+    if (!el.paused) { el.pause(); this.setState({ sound: null }); return; }
+    Object.entries(vids).forEach(([kk, v]) => { if (v && kk !== k) v.pause(); });
+    if (el.currentTime < 0.2 || el.ended) el.currentTime = 0;
+    el.muted = false;
+    const p = el.play();
+    if (p && p.catch) p.catch(() => { el.muted = true; el.play().catch(() => {}); });
+    this.setState({ sound: k });
+  }
+  _vref(k) { this._vr = this._vr || {}; return this._vr[k] = this._vr[k] || ((el) => { const u = k === 'beforeVideo' ? this.bv() : this.av(); if (el) { el.muted = false; el.loop = true; el.loop = true; this._vel = this._vel || {}; this._vel[k] = el; el.onpause = () => { if (this.state.sound === k) this.setState({ sound: null }); }; } if (el && u && el.dataset.u !== u) { el.dataset.u = u; el.src = u + '#t=0.1'; } }); }
+  bv() { return this.props.beforeVideo || 'assets/antes-trex.mp4'; }
+  av() { return this.props.afterVideo || 'assets/con-trex.mp4'; }
+  renderVals() {
+    const D = window.TREX_I18N, I = window.TREX_ICONS || {};
+    const { page, lang, open, narrow, menu } = this.state;
+    const t = D ? D[lang] : undefined;
+    const a8 = (c, a) => c + a;
+    const go = (p) => (e) => this.go(p, e);
+    const out = {
+      rootRef: this.rootRef, canvasRef: this.canvasRef, progressRef: this.progressRef, headerRef: this.headerRef, veilRef: this.veilRef,
+      ringRef: this.ringRef, dotRef: this.dotRef, videoRef: this.videoRef, panelRef: this.panelRef, packsRef: this.packsRef, iframeRef: this.iframeRef,
+      t, ic: I, veilLabel: this.state.veilLabel, screenLabel: 'Trex · ' + page,
+      isHome: page === 'home', isServices: page === 'services', isWork: page === 'work', isPricing: page === 'pricing', isContact: page === 'contact',
+      wide: !narrow, narrow, menuOpen: narrow && menu, showCursor: this.cursorOn(),
+      goHome: go('home'), goServices: go('services'), goWork: go('work'), goPricing: go('pricing'), goContact: go('contact'),
+      toggleLang: () => { const l = lang === 'es' ? 'en' : 'es'; try { localStorage.setItem('trex-lang', l); } catch (e) {} this.setState({ lang: l }); },
+      toggleMenu: () => this.setState({ menu: !menu }),
+      scrollToPacks: () => { const el = this.packsRef.current; if (el) scrollTo({ top: el.getBoundingClientRect().top + scrollY - 80, behavior: 'smooth' }); },
+      submit: (e) => { e.preventDefault(); this.setState({ sent: true }); setTimeout(() => this.setState({ sent: false }), 1600); },
+      sendFx: this.state.sent ? 'translate(60px,-60px) rotate(20deg)' : 'none',
+      videoUrl: this.props.videoUrl || '', hasVideo: !!this.props.videoUrl,
+      hasBeforeVid: !!this.bv(), hasAfterVid: !!this.av(),
+      toggleBeforeSound: (e) => this.toggleVid('beforeVideo', e),
+      toggleAfterSound: (e) => this.toggleVid('afterVideo', e),
+      beforePlayOn: this.state.sound === 'beforeVideo', beforePlayOff: this.state.sound !== 'beforeVideo', afterPlayOn: this.state.sound === 'afterVideo', afterPlayOff: this.state.sound !== 'afterVideo',
+      beforeSoundIcon: this.state.sound === 'beforeVideo' ? 'M4 9h4l5-4v14l-5-4H4z M16 9a4 4 0 0 1 0 6 M18.5 6.5a8 8 0 0 1 0 11' : 'M4 9h4l5-4v14l-5-4H4z M17 9l5 6 M22 9l-5 6', afterSoundIcon: this.state.sound === 'afterVideo' ? 'M4 9h4l5-4v14l-5-4H4z M16 9a4 4 0 0 1 0 6 M18.5 6.5a8 8 0 0 1 0 11' : 'M4 9h4l5-4v14l-5-4H4z M17 9l5 6 M22 9l-5 6',
+      beforeSoundBg: this.state.sound === 'beforeVideo' ? 'linear-gradient(135deg,#2dd4bf,#d84fa6)' : 'rgba(10,10,24,.55)', afterSoundBg: this.state.sound === 'afterVideo' ? 'linear-gradient(135deg,#2dd4bf,#d84fa6)' : 'rgba(10,10,24,.55)',
+      beforeVidRef: this._vref('beforeVideo'), afterVidRef: this._vref('afterVideo'),
+      introOn: this.state.introOn, introRef: this.introRef, introBtnRef: this.introBtnRef, introBarRef: this.introBarRef, introPctRef: this.introPctRef,
+      esBg: lang === 'es' ? 'linear-gradient(90deg,#2dd4bf,#d84fa6)' : 'transparent', esColor: lang === 'es' ? '#0a0a18' : '#cfcbe6',
+      enBg: lang === 'en' ? 'linear-gradient(90deg,#2dd4bf,#d84fa6)' : 'transparent', enColor: lang === 'en' ? '#0a0a18' : '#cfcbe6',
+      setEs: () => { try { localStorage.setItem('trex-lang', 'es'); } catch (e) {} this.setState({ lang: 'es' }); },
+      setEn: () => { try { localStorage.setItem('trex-lang', 'en'); } catch (e) {} this.setState({ lang: 'en' }); },
+      enterSite: () => {
+        if (this._entering) return; this._entering = true;
+        if (this._introPx) this.burstAll(this._introPx, 22);
+        const el = this.introRef.current;
+        setTimeout(() => { if (el) { el.style.opacity = '0'; el.style.transform = 'scale(1.12)'; el.style.pointerEvents = 'none'; } }, 380);
+        setTimeout(() => { this.introGate = false; document.body.style.overflow = ''; scrollTo(0, 0); this.setState({ introOn: false }); const q = this._queued; this._queued = null; if (q) q.forEach(n => n.isConnected && this.reveal(n)); }, 1250);
+      }
+    };
+    if (!t) return out;
+    out.navItems = [['services', t.nav.services], ['work', t.nav.work], ['pricing', t.nav.pricing], ['contact', t.nav.contact]].map(([k, label]) => ({ label, go: go(k), color: page === k ? '#ffffff' : '#b9b5d3', bar: page === k ? 'scaleX(1)' : 'scaleX(0)' }));
+    out.heroChips = [
+      { icon: 'camera', color: '#2dd4bf', x: '2%', y: '22%', depth: 40, amp: 12, phase: 0 },
+      { icon: 'rocket', color: '#d84fa6', x: '80%', y: '12%', depth: 60, amp: 16, phase: 1.5 },
+      { icon: 'phone', color: '#7c6cf0', x: '84%', y: '66%', depth: 34, amp: 10, phase: 3 },
+      { icon: 'chart', color: '#34d399', x: '8%', y: '74%', depth: 52, amp: 14, phase: 4.2 }
+    ].map((c, i) => ({ ...c, path: I[c.icon], ox: (50 + 50 * Math.cos(i * 1.5708 + .6)) + '%', oy: (50 + 50 * Math.sin(i * 1.5708 + .6)) + '%' }));
+    out.marquee2 = [...t.marquee, ...t.marquee];
+    out.stats = t.stats.map(s => ({ ...s, val: s.n ? s.n : '' }));
+    out.steps = t.steps.map((s, i) => ({ ...s, path: I[s.icon], delay: i * 110, stroke: a8(s.color, '55') }));
+    out.process = t.process.map((p, i) => ({ ...p, c1: ['#2dd4bf', '#d84fa6', '#7c6cf0', '#2dd4bf'][i] }));
+    out.svcCards = t.services.cards.map((s, i) => ({ ...s, path: I[s.icon], delay: i * 90, num: '0' + (i + 1), tags: s.d.split(' · ').map(txt => ({ txt, color: s.color })) }));
+    out.areas = t.services.areas.map((a, i) => {
+      const o = !!open[i];
+      return { ...a, path: I[a.icon], list: a.items.map(txt => ({ txt, color: a.color })),
+        rows: o ? '1fr' : '0fr', rot: o ? 'rotate(180deg)' : 'rotate(0deg)', chipBg: o ? a.color : 'rgba(255,255,255,.06)', chev: o ? '#0a0a18' : '#cfcbe6', chipGlow: o ? `0 0 18px ${a.color}` : 'none',
+        bg: o ? `linear-gradient(120deg, ${a8(a.color, '24')}, rgba(16,14,44,.8) 60%)` : 'rgba(18,16,50,.6)', border: o ? a8(a.color, '55') : 'rgba(255,255,255,.08)', shadow: o ? `0 20px 60px -30px ${a.color}` : 'none',
+        toggle: () => this.setState(s => ({ open: { ...s.open, [i]: !s.open[i] } })) };
+    });
+    const sel = Math.min(this.state.sel, out.areas.length - 1), nA = out.areas.length;
+    out.areas.forEach((a, i) => { const on = i === sel; Object.assign(a, { num: String(i + 1).padStart(2, '0'), n: a.items.length, select: () => this.setState({ sel: i }),
+      rowBg: on ? `linear-gradient(90deg, ${a8(a.color, '22')}, transparent)` : 'transparent', barOp: on ? 1 : 0, numColor: on ? a.color : '#6f6b8f', titleColor: on ? '#ffffff' : '#a7a3c2',
+      pillColor: on ? '#0a0a18' : '#a7a3c2', pillBg: on ? a.color : 'rgba(255,255,255,.06)', pillBorder: on ? a.color : 'rgba(255,255,255,.12)', chipBg2: on ? a.color : 'rgba(255,255,255,.05)', chipColor2: on ? '#0a0a18' : '#cfcbe6' }); });
+    out.cur = { ...out.areas[sel], border: a8(out.areas[sel].color, '55') };
+    out.areasTotal = String(nA).padStart(2, '0');
+    out.prevArea = () => this.setState(s2 => ({ sel: (s2.sel - 1 + nA) % nA }));
+    out.nextArea = () => this.setState(s2 => ({ sel: (s2.sel + 1) % nA }));
+    out.areaMarquee = [...t.services.areas, ...t.services.areas].map(a => ({ t: a.t, color: a.color, path: I[a.icon], tint: a8(a.color, '14'), border: a8(a.color, '44') }));
+    out.packs = t.services.packs.map((p, i) => ({ ...p, delay: i * 120,
+      bg: p.featured ? 'linear-gradient(165deg,#3a2f9e,#4b2a80 50%,#172a6e)' : 'linear-gradient(165deg,rgba(26,22,70,.92),rgba(14,12,40,.95))',
+      shadow: p.featured ? '0 40px 100px -40px rgba(124,108,240,.9)' : '0 20px 60px -40px rgba(0,0,0,.8)',
+      chipList: p.chips.map(c => ({ ...c, path: I[c.icon], tint: a8(c.color, '1c'), border: a8(c.color, '40') })) }));
+    return out;
+  }
+}
+</script>
+</body>
+</html>
